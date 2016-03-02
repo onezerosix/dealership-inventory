@@ -59,5 +59,5 @@ VALUES ('E00001', 'C00000001', 'H0000000000000013', '2015', '04', '9');
 ####################################
 #Update SQL Statement for changing Car record
 UPDATE Car
-SET Car_Model = 'Civic'
+SET Model = 'Civic'
 WHERE Car_ID = 1;
