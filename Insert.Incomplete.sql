@@ -39,3 +39,13 @@ VALUES ('E00005', '668392012', 'Chase', 'L', 'Steele', 'Sales Manager', '9098623
 VALUES ('E00006', '776483241', 'Patrick', 'S', 'Tomb', 'General Manager', '9095623190', '7143239887', 80000),
 VALUES ('E00007', '621321190', 'Debra', '', 'Gonzalez', 'CEO', '9518187600', '7143663291', 100000);
 
+
+##################################################
+INSERT INTO CUSTOMER (Cust_ID, FName, Minit, LName, Phone, Address, Email)
+VALUES ('C00000001', 'James', 'E', 'Jones', '7145622882', '1234 W. Some st. City, State 91111', 'cust1@email.com'),
+VALUES ('C00000002', 'Christina', 'H', 'Lopez', '7564800012', '4321 E. Another st. City, State 91111', 'cust2@email.com'),
+VALUES ('C00000003', 'Jay', '', 'Bauman', '8183552199', '4955 W. Fake Ave. City, State 91111', 'cust3@email.com'),
+VALUES ('C00000004', 'Denise', '', 'Lewis', '9096548888', '2377 S. Different rd. City, State 91111', 'cust4@email.com'),
+VALUES ('C00000005', 'Darius', 'J', 'Jacobs', '7146649930', '1111 N. Green st. City, State 91111', 'cust5@email.com'),
+VALUES ('C00000006', 'Lizeth', 'B', 'Bernice', '9517440066', '9889 W. Blue st. City, State 91111', 'cust6@email.com');
+
