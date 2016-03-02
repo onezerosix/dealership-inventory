@@ -55,3 +55,9 @@ INSERT INTO SALE (EID, CID, Sold_VIN, Date_Year,Date_Month,Date_Day)
 VALUES ('E00003', 'C00000004', 'H0000000000000011', '2015', '12', '24'),
 VALUES ('E00005', 'C00000002', 'H0000000000000012', '2015', '08', '11'),
 VALUES ('E00001', 'C00000001', 'H0000000000000013', '2015', '04', '9');
+
+####################################
+#Update SQL Statement for changing Car record
+UPDATE Car
+SET Car_Model = 'Civic'
+WHERE Car_ID = 1;
