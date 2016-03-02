@@ -49,3 +49,9 @@ VALUES ('C00000004', 'Denise', '', 'Lewis', '9096548888', '2377 S. Different rd.
 VALUES ('C00000005', 'Darius', 'J', 'Jacobs', '7146649930', '1111 N. Green st. City, State 91111', 'cust5@email.com'),
 VALUES ('C00000006', 'Lizeth', 'B', 'Bernice', '9517440066', '9889 W. Blue st. City, State 91111', 'cust6@email.com');
 
+
+##################################################
+INSERT INTO SALE (EID, CID, Sold_VIN, Date_Year,Date_Month,Date_Day)
+VALUES ('E00003', 'C00000004', 'H0000000000000011', '2015', '12', '24'),
+VALUES ('E00005', 'C00000002', 'H0000000000000012', '2015', '08', '11'),
+VALUES ('E00001', 'C00000001', 'H0000000000000013', '2015', '04', '9');
