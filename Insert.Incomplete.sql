@@ -59,5 +59,13 @@ VALUES ('E00001', 'C00000001', 'H0000000000000013', '2015', '04', '9');
 ####################################
 #Update SQL Statement for changing Car record
 UPDATE Car
-SET Model = 'Civic'
+SET VIN = 'something', Type = 'something', Make = 'something', Model = 'something', Model_Year = 0000, Model_Trim = 'something', Color = 'something', Mileage = 00, Price = 00
 WHERE Car_ID = 1;
+
+# Show all
+SELECT *
+FROM Car;
+
+#Make New REcord
+INSERT INTO CAR (VIN, Type, Make, Model, Model_Year, Model_Trim, Color, Mileage, Price)
+VALUES ('H0000000000000001', 'Coupe', 'Honda', 'Civic', 1992, 'Base', 'Black', 190000, 2300);
