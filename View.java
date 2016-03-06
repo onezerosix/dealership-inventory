@@ -51,8 +51,8 @@ public class View extends JFrame implements ActionListener {
 	{
 		navButtons = new TreeMap<String, JButton>();
 		navButton_titles = new TreeMap<String, String>(); //<name on button, name of page>
-		navButton_titles.put("Inventory List", "InventoryListPage");
-		navButton_titles.put("User Managment", "UserManagmentPage");
+		navButton_titles.put("Inventory List", InventoryListPage.name);
+		navButton_titles.put("Employee Managment", EmployeeListPage.name);
 
 		
 		navBarPane = new JPanel();
@@ -77,7 +77,8 @@ public class View extends JFrame implements ActionListener {
 		contentPane.add(new LoginPage(model, this), LoginPage.name);
 		contentPane.add(new InventoryListPage(model, this), InventoryListPage.name);
 		contentPane.add(new InventoryPage(model, this), InventoryPage.name);
-		contentPane.add(new UserManagmentPage(), UserManagmentPage.name);
+		contentPane.add(new EmployeeListPage(model, this), EmployeeListPage.name);
+		contentPane.add(new EmployeePage(model, this), EmployeePage.name);
 		
 	}
 	
@@ -122,6 +123,21 @@ public class View extends JFrame implements ActionListener {
 				System.out.println("View::ActionPerformed - Could not load vehicle to inventory page");
 			}
 		}
+		else if(e.getActionCommand().matches("goTo_" + EmployeePage.name + "_.+"))
+		{//loading an employee to the employee page    command format: "goTo_EmployeePage_ID"
+			String[] command = e.getActionCommand().split("_", 3);
+			int id = Integer.valueOf(command[2]);
+			loadPage(command[1]);
+			
+			EmployeePage pageInstance = (EmployeePage) getInstanceOfClass(EmployeePage.name);
+			if(pageInstance != null)
+			{
+				pageInstance.loadEmployeeInformation(id);
+			}else
+			{
+				System.out.println("View::ActionPerformed - Could not load employee to inventory page");
+			}
+		}
 		else if(e.getActionCommand().equals("goTo_" + InventoryListPage.name))
 		{
 			String[] command = e.getActionCommand().split("_", 2);
@@ -129,6 +145,14 @@ public class View extends JFrame implements ActionListener {
 			
 			InventoryListPage ilp = (InventoryListPage) getInstanceOfClass(InventoryListPage.name);
 			ilp.populateInventoryList();
+		}
+		else if(e.getActionCommand().equals("goTo_" + EmployeeListPage.name))
+		{
+			String[] command = e.getActionCommand().split("_", 2);
+			loadPage(EmployeeListPage.name);
+			
+			EmployeeListPage elp = (EmployeeListPage) getInstanceOfClass(EmployeeListPage.name);
+			elp.populateEmployeeList();
 		}
 		else if(e.getActionCommand().matches("goTo_.+"))
 		{

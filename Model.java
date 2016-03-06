@@ -8,7 +8,6 @@ public class Model
 	private DatabaseConnection db;
 	
 	Vector<Vehicle> inventory;
-	Hashtable<String, String> userPass;
 	boolean loggedIn = false;
 	
 	Model()
@@ -17,9 +16,6 @@ public class Model
 		
 		inventory = new Vector<Vehicle>();
 		populateInventory();
-		
-		userPass = new Hashtable<String, String>();
-		populateUsernamesAndPasswords();
 	}
 	
 	
@@ -50,7 +46,7 @@ public class Model
 	
 	void saveVehicle(Vehicle v)
 	{
-		db.saveVehicletoDatabase(v);
+		db.saveVehicle(v);
 		populateInventory();
 	}
 
@@ -60,14 +56,12 @@ public class Model
 		populateInventory();
 	}
 	
-	// --- users and passwords ---
-	void populateUsernamesAndPasswords()
-	{//TODO: populate from database
-		userPass.put("admin", "password");
-	}
+	
+	// --- employees and passwords ---
 
 	boolean logIn(String username, String password)
 	{
+		Hashtable<String, String> userPass = db.getUserPassList();
 		if(userPass.get(username) == null)
 			return false;
 		else if(userPass.get(username).equals(password))
@@ -79,8 +73,37 @@ public class Model
 			return false;
 
 	}
+	
+	Vector<Employee> getEmployees()
+	{
+		return db.getEmployees();
+	}
+		
+	Employee getEmployee(int id)
+	{
+		Employee ret = new Employee(-1, "error", "error", "error", "error", "error", "error", "error", 0);
+		for(Employee e : getEmployees())
+		{
+			if(e.id == id)
+			{
+				ret = new Employee(e);
+			}
+		}
+		return ret;
+	}
+	
+	void saveEmployee(Employee e)
+	{
+		db.saveEmployee(e);
+	}
 
-
+	void deleteEmployee(int id)
+	{
+		db.deleteEmployee(id);
+	}
+	
+	
+	
 	
 }
 

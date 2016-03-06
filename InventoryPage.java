@@ -15,7 +15,7 @@ public class InventoryPage extends JPanel implements ActionListener {
 	public static final String name = "InventoryPage";
 	
 	Model model;
-	Vehicle v;
+	int vehicleID;
 	
 	ActionListener pageLoadDelegate;
 	
@@ -48,6 +48,7 @@ public class InventoryPage extends JPanel implements ActionListener {
 		this.setName(name);
 		this.model = model;
 		this.pageLoadDelegate = pageLoadDelegate;
+		
 		buildContentPane();
 		buildNavPane();
 	}
@@ -76,6 +77,19 @@ public class InventoryPage extends JPanel implements ActionListener {
 		price_text = new JTextField();
 		
 		
+		Dimension textFieldSize = new Dimension(100, 25);
+		
+		vin_text.setPreferredSize(textFieldSize);
+		vehicleType_text.setPreferredSize(textFieldSize);
+		make_text.setPreferredSize(textFieldSize);
+		model_text.setPreferredSize(textFieldSize);
+		year_text.setPreferredSize(textFieldSize);
+		trim_text.setPreferredSize(textFieldSize);
+		color_text.setPreferredSize(textFieldSize);
+		mileage_text.setPreferredSize(textFieldSize);
+		price_text.setPreferredSize(textFieldSize);
+		
+		
 		this.add(vin_label);
 		this.add(vin_text);
 		this.add(vehicleType_label);
@@ -94,19 +108,6 @@ public class InventoryPage extends JPanel implements ActionListener {
 		this.add(mileage_text);
 		this.add(price_label);
 		this.add(price_text);
-		
-
-		Dimension textFieldSize = new Dimension(100, 25);
-		
-		vin_text.setPreferredSize(textFieldSize);
-		vehicleType_text.setPreferredSize(textFieldSize);
-		make_text.setPreferredSize(textFieldSize);
-		model_text.setPreferredSize(textFieldSize);
-		year_text.setPreferredSize(textFieldSize);
-		trim_text.setPreferredSize(textFieldSize);
-		color_text.setPreferredSize(textFieldSize);
-		mileage_text.setPreferredSize(textFieldSize);
-		price_text.setPreferredSize(textFieldSize);
 	}
 	
 	void buildNavPane()
@@ -138,19 +139,20 @@ public class InventoryPage extends JPanel implements ActionListener {
 	public void loadVehicleInformation(int id)
 	{
 		resetPage();
-		v = model.getVehicle(id);
+		Vehicle vehicle = model.getVehicle(id);
+		vehicleID = vehicle.id;
 		
-		if(v.id != -1)
+		if(vehicle.id != -1)
 		{
-			vin_text.setText(v.vin);
-			vehicleType_text.setText(v.vehicleType);
-			make_text.setText(v.make);
-			model_text.setText(v.model);
-			year_text.setText(String.valueOf(v.year));
-			trim_text.setText(v.trim);
-			color_text.setText(v.color);
-			mileage_text.setText( String.valueOf(v.mileage) );
-			price_text.setText( String.valueOf(v.price) );
+			vin_text.setText(vehicle.vin);
+			vehicleType_text.setText(vehicle.vehicleType);
+			make_text.setText(vehicle.make);
+			model_text.setText(vehicle.model);
+			year_text.setText(String.valueOf(vehicle.year));
+			trim_text.setText(vehicle.trim);
+			color_text.setText(vehicle.color);
+			mileage_text.setText( String.valueOf(vehicle.mileage) );
+			price_text.setText( String.valueOf(vehicle.price) );
 		}else
 		{
 			vin_text.setText("");
@@ -170,22 +172,13 @@ public class InventoryPage extends JPanel implements ActionListener {
 	
 	void saveVehicle()
 	{
-		v.vin = vin_text.getText();
-		v.vehicleType = vehicleType_text.getText();
-		v.make = make_text.getText();
-		v.model = model_text.getText();
-		v.year = Integer.valueOf(year_text.getText());
-		v.trim = trim_text.getText();
-		v.color = color_text.getText();
-		v.mileage = Integer.valueOf( mileage_text.getText() );
-		v.price = Integer.valueOf( price_text.getText() );
-		
-		model.saveVehicle(v);
+		model.saveVehicle(new Vehicle( vehicleID, vin_text.getText(), vehicleType_text.getText(), make_text.getText(), model_text.getText(), Integer.valueOf(year_text.getText()),
+				trim_text.getText(), color_text.getText(), Integer.valueOf(mileage_text.getText()), Integer.valueOf(price_text.getText())));
 	}
 	
 	void deleteVehicle()
 	{
-		model.deleteVehicle(v.id);
+		model.deleteVehicle(vehicleID);
 	}
 	
 	@Override
