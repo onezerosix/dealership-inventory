@@ -1,7 +1,7 @@
 
 public class InputValidator {
 
-	static InputValidator sharedInstance = new InputValidator();
+	public static InputValidator sharedInstance = new InputValidator();
 	private InputValidator(){};
 	
 	boolean validateName(String name)
