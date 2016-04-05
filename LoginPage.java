@@ -33,12 +33,12 @@ public class LoginPage extends JPanel implements ActionListener, KeyListener {
 	JButton login_button;
 	
 	
-	LoginPage(Model model, ActionListener pageLoadDelegate)
+	LoginPage(ActionListener pageLoadDelegate)
 	{
 		this.setName(name);
 		this.setLayout(new GridBagLayout());
 		
-		this.model = model;
+		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
 		
 		buildLoginPage();	
@@ -90,6 +90,8 @@ public class LoginPage extends JPanel implements ActionListener, KeyListener {
 		{
 			username_text.setBackground(Color.white);
 			password_text.setBackground(Color.white);
+			username_text.setText("");
+			password_text.setText("");
 			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
 			pageLoadDelegate.actionPerformed(ae);
 		}else

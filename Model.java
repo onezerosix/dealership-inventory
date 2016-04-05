@@ -5,12 +5,15 @@ import java.util.Vector;
 
 public class Model
 {
+	
+	static final Model sharedInstance = new Model();
+	
 	private DatabaseConnection db;
 	
-	Vector<Vehicle> inventory;
-	boolean loggedIn = false;
+	private Vector<Vehicle> inventory; //TODO: get rid of this. database should be only thing that owns inventory information
+	private int currentUser = -1; //value of < 0 means no user is logged in	
 	
-	Model()
+ 	private Model()
 	{
 		db = new DatabaseConnection();
 		
@@ -41,7 +44,7 @@ public class Model
 			}
 		}
 		
-		return new Vehicle(-1, "error", "error", "error", "error", 1995, "error", "error", 1, 1);
+		return new Vehicle();
 	}
 	
 	void saveVehicle(Vehicle v)
@@ -57,23 +60,8 @@ public class Model
 	}
 	
 	
-	// --- employees and passwords ---
+	// --- employees ---
 
-	boolean logIn(String username, String password)
-	{
-		Hashtable<String, String> userPass = db.getUserPassList();
-		if(userPass.get(username) == null)
-			return false;
-		else if(userPass.get(username).equals(password))
-		{
-			loggedIn = true;
-			return true;
-		}
-		else
-			return false;
-
-	}
-	
 	Vector<Employee> getEmployees()
 	{
 		return db.getEmployees();
@@ -81,7 +69,7 @@ public class Model
 		
 	Employee getEmployee(int id)
 	{
-		Employee ret = new Employee(-1, "error", "error", "error", "error", "error", "error", "error", 0);
+		Employee ret = new Employee();
 		for(Employee e : getEmployees())
 		{
 			if(e.id == id)
@@ -91,7 +79,7 @@ public class Model
 		}
 		return ret;
 	}
-	
+
 	void saveEmployee(Employee e)
 	{
 		db.saveEmployee(e);
@@ -103,9 +91,85 @@ public class Model
 	}
 	
 	
+	// --- authentication ---
+	
+	boolean logIn(String username, String password)
+	{
+		for(Employee e : getEmployees())
+		{
+			if(username.equals(e.userName) && password.equals(e.password))
+			{
+				currentUser = e.id;
+				return true;
+			}
+		}
+		
+		currentUser = -1;
+		return false;
+	}
+	
+	void logOut()
+	{
+		currentUser = -1;
+	}
+	
+	boolean isLoggedIn()
+	{
+		return currentUser != -1;
+	}
+	
+	Employee getCurrentUser()
+	{
+		return getEmployee(currentUser);
+	}
+	
+	boolean checkPrivelage(int requiredAccessLevel)
+	{//use this to see if the current user has permission to do a specific action
+		if(getCurrentUser().accessLevel >= requiredAccessLevel)
+			return true;
+		else
+			return false;
+	}
 	
 	
+	// --- sale records ---
+	
+	Vector<SaleRecord> getSaleRecords()
+	{
+		return db.getSaleRecords();
+	}
+	
+	void saveSaleRecord(SaleRecord sr)
+	{
+		if(sr.saleRecordID < 0)
+			db.addNewSaleRecord(sr);
+		else
+			db.updateExistingSaleRecord(sr);
+	}
+
+	SaleRecord getSaleRecord(int id)
+	{
+		SaleRecord ret = new SaleRecord();
+		for(SaleRecord sr : getSaleRecords())
+		{
+			if(sr.saleRecordID == id)
+			{
+				ret = new SaleRecord(sr);
+			}
+		}
+		return ret;
+	}
+
+
+
+
 }
+
+
+
+
+
+
 
 
 

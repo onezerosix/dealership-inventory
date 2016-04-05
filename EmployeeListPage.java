@@ -23,14 +23,15 @@ public class EmployeeListPage extends JPanel implements ActionListener
 	DefaultTableModel tableModel;
 	JTable table;
 	JButton newEmployee_button;
+	JButton editEmployee_button;
 	
 	ActionListener pageLoadDelegate;
 
-	EmployeeListPage(Model model, ActionListener pageLoadDelegate)
+	EmployeeListPage(ActionListener pageLoadDelegate)
 	{
 		this.setName(name);
 		
-		this.model = model;
+		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
 		
 		tableModel = new DefaultTableModel()
@@ -50,7 +51,9 @@ public class EmployeeListPage extends JPanel implements ActionListener
 //		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(3).setPreferredWidth(20);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
-		table.removeColumn(table.getColumnModel().getColumn(0));
+		table.removeColumn(table.getColumn("ID"));
+		table.removeColumn(table.getColumn("SSN"));
+		table.removeColumn(table.getColumn("Salary"));
 
 		//mouse listener
 		table.addMouseListener(new MouseAdapter(){
@@ -71,7 +74,13 @@ public class EmployeeListPage extends JPanel implements ActionListener
 		newEmployee_button.setName("newEmployee");
 		newEmployee_button.setActionCommand(newEmployee_button.getName());
 		newEmployee_button.addActionListener(this);
-		this.add(newEmployee_button);
+		add(newEmployee_button);
+		
+		editEmployee_button = new JButton("Edit");
+		editEmployee_button.setName("editEmployee");
+		editEmployee_button.setActionCommand(editEmployee_button.getName());
+		editEmployee_button.addActionListener(this);
+		add(editEmployee_button);
 		
 		populateEmployeeList();
 		
@@ -104,20 +113,23 @@ public class EmployeeListPage extends JPanel implements ActionListener
 		ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeePage.name + "_"+id);
 		pageLoadDelegate.actionPerformed(ae);
 	}
-
-	void createBlankRow()
-	{
-		Object[] rowData = {"-1","--", "--", "--", "--", "--", "--", "--", "--"};
-		tableModel.addRow(rowData);
-		tableModel.fireTableDataChanged();
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 			
 		if(e.getActionCommand().equals(newEmployee_button.getName()))
 		{
-			createBlankRow();
+			loadEmployeePage(-1);
+		}
+		else if(e.getActionCommand().equals(editEmployee_button.getName()))
+		{
+			int row = table.getSelectedRow();
+			int id;
+			if(row >= 0)
+			{
+				id =  Integer.valueOf( String.valueOf( tableModel.getValueAt(row, 0) ) );
+				loadEmployeePage(id);
+			}
 		}
 	}
 	

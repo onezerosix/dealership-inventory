@@ -33,4 +33,9 @@ public class Vehicle
 	{
 		this(v.id, v.vin, v.vehicleType, v.make, v.model, v.year, v.trim, v.color, v.mileage, v.price);
 	}
+	
+	Vehicle()
+	{//use this when a Vehicle needs to be initialized, but live data is not yet available / applicable
+		this(-1, "error", "error", "error", "error", 1995, "error", "error", 1, 1);
+	}
 }

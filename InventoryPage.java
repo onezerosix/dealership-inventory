@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,13 +43,15 @@ public class InventoryPage extends JPanel implements ActionListener {
 	
 	JButton save_button;
 	JButton delete_button;
+	JButton sell_button;
 	
 	
-	InventoryPage(Model model, ActionListener pageLoadDelegate)
+	InventoryPage(ActionListener pageLoadDelegate)
 	{
 		this.setName(name);
-		this.model = model;
+		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
+		this.setLayout(new GridBagLayout());
 		
 		buildContentPane();
 		buildNavPane();
@@ -90,24 +94,110 @@ public class InventoryPage extends JPanel implements ActionListener {
 		price_text.setPreferredSize(textFieldSize);
 		
 		
-		this.add(vin_label);
-		this.add(vin_text);
-		this.add(vehicleType_label);
-		this.add(vehicleType_text);
-		this.add(make_label);
-		this.add(make_text);
-		this.add(model_label);
-		this.add(model_text);
-		this.add(year_label);
-		this.add(year_text);
-		this.add(trim_label);
-		this.add(trim_text);
-		this.add(color_label);
-		this.add(color_text);
-		this.add(mileage_label);
-		this.add(mileage_text);
-		this.add(price_label);
-		this.add(price_text);
+//		this.add(vin_label);
+//		this.add(vin_text);
+//		this.add(vehicleType_label);
+//		this.add(vehicleType_text);
+//		this.add(make_label);
+//		this.add(make_text);
+//		this.add(model_label);
+//		this.add(model_text);
+//		this.add(year_label);
+//		this.add(year_text);
+//		this.add(trim_label);
+//		this.add(trim_text);
+//		this.add(color_label);
+//		this.add(color_text);
+//		this.add(mileage_label);
+//		this.add(mileage_text);
+//		this.add(price_label);
+//		this.add(price_text);
+		
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.anchor = GridBagConstraints.LINE_START; 
+
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(vin_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 1;	
+		this.add(vin_text,c);
+
+		c.gridx = 0;
+		c.gridy = 3;		
+		this.add(make_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 4;		
+		this.add(make_text,c);
+		
+		c.anchor = GridBagConstraints.CENTER; 	
+		
+		c.gridx = 2;
+		c.gridy = 3;
+		this.add(model_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 4;		
+		this.add(model_text,c);
+		
+		c.gridx = 4;
+		c.gridy = 3;		
+		this.add(vehicleType_label,c);
+		
+		c.gridx = 4;
+		c.gridy = 4;
+		this.add(vehicleType_text,c);
+		
+		c.anchor = GridBagConstraints.LINE_START;	
+		
+		c.gridx = 0;
+		c.gridy = 5;
+		this.add(year_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 6;		
+		this.add(year_text,c);
+		
+		c.anchor = GridBagConstraints.CENTER; 
+		
+		c.gridx = 2;
+		c.gridy = 5;
+		this.add(trim_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 6;
+		this.add(trim_text,c);
+
+		c.gridx = 4;
+		c.gridy = 5;
+		this.add(color_label,c);
+		
+		c.gridx = 4;
+		c.gridy = 6;
+		this.add(color_text,c);
+		
+		c.anchor = GridBagConstraints.LINE_START;	
+		
+		c.gridx = 0;
+		c.gridy = 8;
+		this.add(mileage_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 9;
+		this.add(mileage_text,c);
+		
+		c.gridx = 2;
+		c.gridy = 8;
+		this.add(price_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 9;
+		this.add(price_text,c);
+		
 	}
 	
 	void buildNavPane()
@@ -115,12 +205,31 @@ public class InventoryPage extends JPanel implements ActionListener {
 		save_button = new JButton("Save");
 		save_button.setActionCommand("save");
 		save_button.addActionListener(this);
-		this.add(save_button);
 		
 		delete_button = new JButton("Delete");
 		delete_button.setActionCommand("delete");
 		delete_button.addActionListener(this);
-		this.add(delete_button);
+		
+		sell_button = new JButton("Sell");
+		sell_button.setName("sell");
+		sell_button.setActionCommand(sell_button.getName());
+		sell_button.addActionListener(this);
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 4;
+		c.gridy = 10;
+		this.add(save_button, c);
+		
+		c.gridx = 5;
+		c.gridy = 10;
+		this.add(delete_button, c);
+		
+		c.gridx = 3;
+		c.gridy = 10;
+		this.add(sell_button, c);
+		
+		
 	}
 	
 	void resetPage()
@@ -134,6 +243,16 @@ public class InventoryPage extends JPanel implements ActionListener {
 		color_text.setText("");
 		mileage_text.setText( String.valueOf("") );
 		price_text.setText( String.valueOf("") );
+		
+		vin_text.setBackground(Color.white);
+		vehicleType_text.setBackground(Color.white);
+		make_text.setBackground(Color.white);
+		model_text.setBackground(Color.white);
+		color_text.setBackground(Color.white);
+		year_text.setBackground(Color.white);
+		trim_text.setBackground(Color.white);
+		mileage_text.setBackground(Color.white);
+		price_text.setBackground(Color.white);
 	}
 	
 	public void loadVehicleInformation(int id)
@@ -170,10 +289,73 @@ public class InventoryPage extends JPanel implements ActionListener {
 		
 	}
 	
-	void saveVehicle()
+	boolean saveVehicle()
 	{
-		model.saveVehicle(new Vehicle( vehicleID, vin_text.getText(), vehicleType_text.getText(), make_text.getText(), model_text.getText(), Integer.valueOf(year_text.getText()),
-				trim_text.getText(), color_text.getText(), Integer.valueOf(mileage_text.getText()), Integer.valueOf(price_text.getText())));
+		InputValidator iv = InputValidator.sharedInstance;
+		boolean valid = true;
+		vin_text.setBackground(Color.white);
+		vehicleType_text.setBackground(Color.white);
+		make_text.setBackground(Color.white);
+		model_text.setBackground(Color.white);
+		color_text.setBackground(Color.white);
+		year_text.setBackground(Color.white);
+		trim_text.setBackground(Color.white);
+		mileage_text.setBackground(Color.white);
+		price_text.setBackground(Color.white);
+
+		if(!iv.validateVehicleVIN(vin_text.getText()))
+		{
+			vin_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleType(vehicleType_text.getText()))
+		{
+			vehicleType_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleMakeModelColor(make_text.getText()))
+		{
+			make_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleMakeModelColor(model_text.getText()))
+		{
+			model_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleMakeModelColor(color_text.getText()))
+		{
+			color_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleYear(year_text.getText()))
+		{
+			year_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleTrim(trim_text.getText()))
+		{
+			trim_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehicleMileage(mileage_text.getText()))
+		{
+			mileage_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateVehiclePrice(price_text.getText()))
+		{
+			price_text.setBackground(Color.red);
+			valid = false;
+		}
+
+		if(valid)
+		{
+			model.saveVehicle(new Vehicle( vehicleID, vin_text.getText(), vehicleType_text.getText(), make_text.getText(), model_text.getText(), Integer.valueOf(year_text.getText()),
+					trim_text.getText(), color_text.getText(), Integer.valueOf(mileage_text.getText()), Integer.valueOf(price_text.getText())));
+		}
+
+		return valid;
 	}
 	
 	void deleteVehicle()
@@ -188,13 +370,19 @@ public class InventoryPage extends JPanel implements ActionListener {
 		
 		if(command.equals("save"))
 		{
-			saveVehicle();
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
-			pageLoadDelegate.actionPerformed(ae);
+			if(saveVehicle())
+			{
+//			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+//			pageLoadDelegate.actionPerformed(ae);
+			}
 		}else if(command.equals("delete"))
 		{
 			deleteVehicle();
 			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+			pageLoadDelegate.actionPerformed(ae);
+		}else if(command.equals(sell_button.getName()))
+		{
+			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_new_" + vehicleID);
 			pageLoadDelegate.actionPerformed(ae);
 		}
 		

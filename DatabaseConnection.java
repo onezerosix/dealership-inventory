@@ -12,7 +12,7 @@ public class DatabaseConnection
 	Connection c = null;
 	Statement stmt = null;
 	ResultSet rs = null;
-	
+
 	public void saveVehicle(Vehicle v)
 	{
 		if(v.id == -1)
@@ -244,12 +244,14 @@ public class DatabaseConnection
 
 	void addNewSaleRecord(SaleRecord sr)
 	{
-		connect();
 		
-		String sql_1 = "INSERT INTO Sale (EID, CID, Sold_Car_ID, Date_Year,Date_Month,Date_Day, PriceSold) VALUES"
-			+ "('" + sr.employeeID + "', '" + sr.customerID + "', '" + sr.vehicleID + "', '" + sr.year + "', " + sr.month + ", '" + sr.day + "', '" + sr.salePrice + "');";
-		String sql_2 = "INSERT INTO Customer (FName, Minit, LName, Phone, Address) VALUES"
+
+		String sql_1 = "INSERT INTO Customer (FName, Minit, LName, Phone, Address) VALUES"
 			+ "('" + sr.firstName + "', '" + sr.middleInitial + "', '" + sr.lastName + "', '" + sr.phone + "', " + sr.address + ");";
+		String sql_2 = "INSERT INTO Sale (EID, CID, Sold_Car_ID, Date_Year,Date_Month,Date_Day, PriceSold) VALUES"
+			+ "('" + sr.employeeID + "', '" + getMostRecentCustID() + "', '" + sr.vehicleID + "', '" + sr.year + "', " + sr.month + ", '" + sr.day + "', '" + sr.salePrice + "');";
+		
+		connect();
 		
 		try {
 			stmt = c.createStatement();
@@ -263,6 +265,32 @@ public class DatabaseConnection
 		disconnect();
 	}
 	
+	private int getMostRecentCustID()
+	{
+		int id = -1;
+		
+		connect();
+
+		String sql = "Select max(Cust_ID) as 'Most Recent Customer' from Customer;";
+
+		
+		try
+		{
+			stmt = c.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			id = rs.getInt("Most Recent Customer");
+			
+			
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		disconnect();
+		return id;
+	}
+
 	void updateExistingSaleRecord(SaleRecord sr) 
 	{
 		connect();
@@ -312,6 +340,7 @@ public class DatabaseConnection
 		return i;
 	}
 
+	
 	
 	
 	

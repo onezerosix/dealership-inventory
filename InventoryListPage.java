@@ -27,14 +27,15 @@ public class InventoryListPage extends JPanel implements ActionListener
 	DefaultTableModel tableModel;
 	JTable table;
 	JButton newVehicle_button;
+	JButton editVehicle_button;
 	
 	ActionListener pageLoadDelegate;
 
-	InventoryListPage(Model model, ActionListener pageLoadDelegate)
+	InventoryListPage(ActionListener pageLoadDelegate)
 	{
 		this.setName(name);
 		
-		this.model = model;
+		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
 		
 		tableModel = new DefaultTableModel()
@@ -73,7 +74,13 @@ public class InventoryListPage extends JPanel implements ActionListener
 		newVehicle_button.setName("newVehicle");
 		newVehicle_button.setActionCommand(newVehicle_button.getName());
 		newVehicle_button.addActionListener(this);
-		this.add(newVehicle_button);
+		add(newVehicle_button);
+		
+		editVehicle_button = new JButton("Edit");
+		editVehicle_button.setName("editVehicle");
+		editVehicle_button.setActionCommand(editVehicle_button.getName());
+		editVehicle_button.addActionListener(this);
+		add(editVehicle_button);
 		
 		populateInventoryList();
 		
@@ -104,16 +111,9 @@ public class InventoryListPage extends JPanel implements ActionListener
 	}
 	
 	void loadInventoryPage(int id)
-	{
+	{// use -1 for the id when creating a new vehicle
 		ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryPage.name + "_"+id);
 		pageLoadDelegate.actionPerformed(ae);
-	}
-
-	void createBlankRow()
-	{
-		Object[] rowData = {"-1","--", "--", "--", "--", "--", "--", "--", "--", "--"};
-		tableModel.addRow(rowData);
-		tableModel.fireTableDataChanged();
 	}
 	
 	@Override
@@ -121,7 +121,17 @@ public class InventoryListPage extends JPanel implements ActionListener
 			
 		if(e.getActionCommand().equals(newVehicle_button.getName()))
 		{
-			createBlankRow();
+			loadInventoryPage(-1);
+		}else if(e.getActionCommand().equals(editVehicle_button.getName()))
+		{
+			int row = table.getSelectedRow();
+			int id;
+			if(row >= 0)
+			{
+				id =  Integer.valueOf( String.valueOf( tableModel.getValueAt(row, 0) ) );
+				loadInventoryPage(id);
+			}
+			
 		}
 	}
 	

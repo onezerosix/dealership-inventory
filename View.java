@@ -1,13 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,18 +21,21 @@ public class View extends JFrame implements ActionListener {
 	JPanel navBarPane;
 	TreeMap<String, JButton> navButtons;
 	TreeMap<String, String> navButton_titles;
+	JButton logOut_button;
 	
 	//content pane
 	JPanel contentPane;
 	CardLayout contentPaneCardLayout;
 	
+	String homePage = InventoryListPage.name; //TODO: make this do something
 	
-	View(Model model)
+	
+	View()
 	{
 		super("In-house Algorithm Applicaiton");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.model = model;
+		this.model = Model.sharedInstance;
 		
 		buildNavBar();
 		buildContentPane();
@@ -49,47 +51,66 @@ public class View extends JFrame implements ActionListener {
 	
 	void buildNavBar()
 	{
+		
+		// navigation buttons
 		navButtons = new TreeMap<String, JButton>();
 		navButton_titles = new TreeMap<String, String>(); //<name on button, name of page>
 		navButton_titles.put("Inventory List", InventoryListPage.name);
 		navButton_titles.put("Employee Managment", EmployeeListPage.name);
+		navButton_titles.put("Sale Records", SaleRecordListPage.name);
 
-		
-		navBarPane = new JPanel();
-		navBarPane.setLayout(new BoxLayout(navBarPane, BoxLayout.X_AXIS));
+		navBarPane = new JPanel(new BorderLayout());
 		navBarPane.setBackground(Color.LIGHT_GRAY);
-//		Dimension navButtonSize = new Dimension(100, 100);
+		((BorderLayout) navBarPane.getLayout()).setVgap(0);
+		
+		JPanel navBarPageButtons = new JPanel();
+		navBarPageButtons.setBackground(Color.LIGHT_GRAY);
+		((FlowLayout) navBarPageButtons.getLayout()).setVgap(0);
+
+
 		for(Map.Entry<String, String> entry : navButton_titles.entrySet())
 		{
 			JButton newButton = new JButton(entry.getKey());
-//			newButton.setPreferredSize(navButtonSize);
 			newButton.setName(entry.getKey());
 			newButton.addActionListener(this);
 			newButton.setActionCommand("goTo_" + entry.getValue());
 			navButtons.put(entry.getKey(), newButton);
-			navBarPane.add(newButton);
+			navBarPageButtons.add(newButton);
 		}
+		navBarPane.add(navBarPageButtons, BorderLayout.LINE_START);
+				
+		
+		//logout button
+		logOut_button = new JButton("Log Out");
+		logOut_button.setName("logOut");
+		logOut_button.setActionCommand(logOut_button.getName());
+		logOut_button.addActionListener(this);
+		navBarPane.add(logOut_button, BorderLayout.LINE_END);
+		
 	}
 	
 	void buildContentPane()
 	{
 		contentPane = new JPanel(new CardLayout());
-		contentPane.add(new LoginPage(model, this), LoginPage.name);
-		contentPane.add(new InventoryListPage(model, this), InventoryListPage.name);
-		contentPane.add(new InventoryPage(model, this), InventoryPage.name);
-		contentPane.add(new EmployeeListPage(model, this), EmployeeListPage.name);
-		contentPane.add(new EmployeePage(model, this), EmployeePage.name);
+		contentPane.add(new LoginPage(this), LoginPage.name);
+		contentPane.add(new InventoryListPage(this), InventoryListPage.name);
+		contentPane.add(new InventoryPage(this), InventoryPage.name);
+		contentPane.add(new EmployeeListPage(this), EmployeeListPage.name);
+		contentPane.add(new EmployeePage(this), EmployeePage.name);
+		contentPane.add(new SaleRecordListPage(this), SaleRecordListPage.name);
+		contentPane.add(new SaleRecordPage(this), SaleRecordPage.name);
 		
 	}
 	
 	void loadPage(String named)
 	{
 		//check for privileges
-		if(model.loggedIn)
-		{
-			CardLayout cl = (CardLayout) contentPane.getLayout();
+		
+		CardLayout cl = (CardLayout) contentPane.getLayout();
+		if(model.isLoggedIn())
 			cl.show(contentPane, named);
-		}
+		else
+			cl.show(contentPane, LoginPage.name);
 	}
 
 	private Object getInstanceOfClass(String name)
@@ -154,9 +175,41 @@ public class View extends JFrame implements ActionListener {
 			EmployeeListPage elp = (EmployeeListPage) getInstanceOfClass(EmployeeListPage.name);
 			elp.populateEmployeeList();
 		}
-		else if(e.getActionCommand().matches("goTo_.+"))
+		else if(e.getActionCommand().matches("goTo_" + SaleRecordPage.name + "_.+_.+"))
 		{
-			loadPage(e.getActionCommand().split("_", 2)[1]);
+			String[] command = e.getActionCommand().split("_", 4);
+			int id = Integer.valueOf(command[3]);
+			boolean newSell = command[2].equals("new");
+			loadPage(command[1]);
+			
+			SaleRecordPage pageInstance = (SaleRecordPage) getInstanceOfClass(SaleRecordPage.name);
+			if(pageInstance != null)
+			{
+				if(newSell)
+					pageInstance.createNewSaleRecord(id);
+				else
+					pageInstance.loadSaleRecordInformation(id);
+					
+			}else
+			{
+				System.out.println("View::ActionPerformed - Could not load instance of SaleRecordPage");
+			}	
+		}else if(e.getActionCommand().equals("goTo_" + SaleRecordListPage.name)) //----------
+		{
+			String[] command = e.getActionCommand().split("_", 2);
+			loadPage(SaleRecordListPage.name);
+			
+			SaleRecordListPage esrlp = (SaleRecordListPage) getInstanceOfClass(SaleRecordListPage.name);
+			esrlp.populateSaleRecordList();
+		}
+//		else if(e.getActionCommand().matches("goTo_.+"))
+//		{
+//			loadPage(e.getActionCommand().split("_", 2)[1]);
+//		}
+		else if(e.getActionCommand().equals(logOut_button.getName()))
+		{
+			model.logOut();
+			loadPage(LoginPage.name);
 		}
 	}
 }

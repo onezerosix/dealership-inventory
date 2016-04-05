@@ -1,4 +1,7 @@
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,12 +42,13 @@ public class EmployeePage extends JPanel implements ActionListener {
 	JButton delete_button;
 	
 
-	EmployeePage(Model model, ActionListener pageLoadDelegate)
+	EmployeePage(ActionListener pageLoadDelegate)
 	{
 		this.setName(name);
-		this.model = model;
+		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
-
+		this.setLayout(new GridBagLayout());
+		
 		buildContentPane();
 		buildNavPane();
 	}
@@ -89,6 +93,14 @@ public class EmployeePage extends JPanel implements ActionListener {
 		workPhone_text.setText("");
 		personalPhone_text.setText("");
 		salary_text.setText("");
+		
+		ssn_text.setBackground(Color.white);
+		firstName_text.setBackground(Color.white);
+		middleInitial_text.setBackground(Color.white);
+		lastName_text.setBackground(Color.white);
+		workPhone_text.setBackground(Color.white);
+		personalPhone_text.setBackground(Color.white);
+		salary_text.setBackground(Color.white);
 	}
 	
 	private void buildContentPane()
@@ -122,22 +134,98 @@ public class EmployeePage extends JPanel implements ActionListener {
 		personalPhone_text.setPreferredSize(textFieldSize);
 		salary_text.setPreferredSize(textFieldSize);
 		
-		this.add(ssn_label);
-		this.add(ssn_text);
-		this.add(firstName_label);
-		this.add(firstName_text);
-		this.add(middleInitial_label);
-		this.add(middleInitial_text);
-		this.add(lastName_label);
-		this.add(lastName_text);
-		this.add(title_label);
-		this.add(title_text);
-		this.add(workPhone_label);
-		this.add(workPhone_text);
-		this.add(personalPhone_label);
-		this.add(personalPhone_text);
-		this.add(salary_label);
-		this.add(salary_text);
+//		this.add(ssn_label);
+//		this.add(ssn_text);
+//		this.add(firstName_label);
+//		this.add(firstName_text);
+//		this.add(middleInitial_label);
+//		this.add(middleInitial_text);
+//		this.add(lastName_label);
+//		this.add(lastName_text);
+//		this.add(title_label);
+//		this.add(title_text);
+//		this.add(workPhone_label);
+//		this.add(workPhone_text);
+//		this.add(personalPhone_label);
+//		this.add(personalPhone_text);
+//		this.add(salary_label);
+//		this.add(salary_text);
+		
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.anchor = GridBagConstraints.LINE_START; 
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(ssn_label,c);	
+		
+		c.gridx = 0;
+		c.gridy = 1;	
+		this.add(ssn_text, c);
+		
+		c.gridx = 0;
+		c.gridy = 3;
+		this.add(firstName_label, c);
+		
+		c.gridx = 0;
+		c.gridy = 4;
+		this.add(firstName_text,c);
+
+		c.anchor = GridBagConstraints.CENTER; 
+		
+		c.gridx = 2;
+		c.gridy = 3;
+		this.add(middleInitial_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 4;
+		this.add(middleInitial_text, c);
+		
+		c.gridx = 4;
+		c.gridy = 3;
+		this.add(lastName_label, c);
+		
+		c.gridx = 4;
+		c.gridy = 4;
+		this.add(lastName_text, c);
+		
+		c.anchor = GridBagConstraints.LINE_START;
+		
+		c.gridx = 0;
+		c.gridy = 5;
+		this.add(title_label, c);
+		
+		c.gridx = 0;
+		c.gridy = 6;
+		this.add(title_text, c);
+		
+		c.gridx = 0;
+		c.gridy = 8;
+		this.add(workPhone_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 9;
+		this.add(workPhone_text,c);
+		
+		c.anchor = GridBagConstraints.CENTER; 
+		
+		c.gridx = 2;
+		c.gridy = 8;
+		this.add(personalPhone_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 9;
+		this.add(personalPhone_text,c);
+
+		c.anchor = GridBagConstraints.LINE_START;
+
+		c.gridx = 0;
+		c.gridy = 11;
+		this.add(salary_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 12;
+		this.add(salary_text,c);
 	}
 	
 	private void buildNavPane()
@@ -145,18 +233,71 @@ public class EmployeePage extends JPanel implements ActionListener {
 		save_button = new JButton("Save");
 		save_button.setActionCommand("save");
 		save_button.addActionListener(this);
-		this.add(save_button);
-		
+
 		delete_button = new JButton("Delete");
 		delete_button.setActionCommand("delete");
 		delete_button.addActionListener(this);
-		this.add(delete_button);
+		
+
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 4;
+		c.gridy = 13;
+		this.add(save_button, c);
+		
+		c.gridx = 5;
+		c.gridy = 13;
+		this.add(delete_button, c);
+		
 	}
 	
-	private void saveEmployee()
+	private boolean saveEmployee()
 	{
+		InputValidator iv = InputValidator.sharedInstance;
+		boolean valid = true;
+		ssn_text.setBackground(Color.white);
+		firstName_text.setBackground(Color.white);
+		middleInitial_text.setBackground(Color.white);
+		lastName_text.setBackground(Color.white);
+		workPhone_text.setBackground(Color.white);
+		personalPhone_text.setBackground(Color.white);
+		salary_text.setBackground(Color.white);
+		
+		if(!iv.validateSSN(ssn_text.getText())){
+			ssn_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateName(firstName_text.getText())){
+			firstName_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateMinit(middleInitial_text.getText())){
+			middleInitial_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateName(lastName_text.getText())){
+			lastName_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validatePhoneNumber(workPhone_text.getText())){
+			workPhone_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validatePhoneNumber(personalPhone_text.getText())){
+			personalPhone_text.setBackground(Color.red);
+			valid = false;
+		}
+		if(!iv.validateSalary(salary_text.getText())){
+			salary_text.setBackground(Color.red);
+			valid = false;
+		}
+		
+		if(valid){
 		model.saveEmployee(new Employee(employeeID, ssn_text.getText(), firstName_text.getText(), middleInitial_text.getText(), lastName_text.getText(), title_text.getText(),
-				workPhone_text.getText(), personalPhone_text.getText(), Integer.valueOf(salary_text.getText()) ));
+				workPhone_text.getText(), personalPhone_text.getText(), Integer.valueOf(salary_text.getText()), 9, "user", "pass" )); //TODO: add access level, username, and pass support to this page
+		}
+		
+		return valid;
 	}
 	
 	private void deleteEmployee()
@@ -171,9 +312,10 @@ public class EmployeePage extends JPanel implements ActionListener {
 		
 		if(command.equals("save"))
 		{
-			saveEmployee();
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
-			pageLoadDelegate.actionPerformed(ae);
+			if(saveEmployee()){
+//				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
+//				pageLoadDelegate.actionPerformed(ae);
+			}
 		}else if(command.equals("delete"))
 		{
 			deleteEmployee();

@@ -25,12 +25,15 @@ public class SaleRecord{
 		
 	}
 	
-	SaleRecord(SaleRecord e)
+	SaleRecord(SaleRecord sr)
 	{
-		this(e.saleRecordID, e.employeeID, e.customerID, e.vehicleID, e.firstName, e.middleInitial, e.lastName, e.phone, 
-				e.address, e.salePrice, e.year, e.month, e.day);
+		this(sr.saleRecordID, sr.employeeID, sr.customerID, sr.vehicleID, sr.firstName, sr.middleInitial, sr.lastName, sr.phone, 
+				sr.address, sr.salePrice, sr.year, sr.month, sr.day);
 	}
 	
-	
+	SaleRecord()
+	{
+		this(-1,-1,-1,-1, "error", "error", "error", "error", "error", 0,0,0,0);
+	}
 	
 } 
