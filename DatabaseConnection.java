@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DatabaseConnection {
+public class DatabaseConnection
+{
 
 	Connection c = null;
 	Statement stmt = null;
@@ -130,20 +131,6 @@ public class DatabaseConnection {
 		return i;
 	}
 	
-	public Hashtable<String, String> getUserPassList()
-	{
-		Hashtable<String, String> up = new Hashtable<String, String>();
-		up.put("admin", "password");
-		
-		return up;
-		
-		
-	}
-
-	
-	//int id, String ssn, String firstName, String MI, String lastName, String title, String workPhone,  String personalPhone, int salary
-	
-	
 	public Vector<Employee> getEmployees()
 	{
 		connect();
@@ -158,7 +145,8 @@ public class DatabaseConnection {
 			while(rs.next())
 			{
 				e.add(new Employee(rs.getInt("emp_id"), rs.getString("ssn"), rs.getString("fname"), rs.getString("minit"), rs.getString("lname"),
-						rs.getString("title"), rs.getString("wphone"), rs.getString("pphone"), rs.getInt("salary") ));
+						rs.getString("title"), rs.getString("wphone"), rs.getString("pphone"), rs.getInt("salary"), rs.getInt("accessLevel"),
+						rs.getString("username"), rs.getString("password") ));
 			}
 		} catch (SQLException error) {
 			// TODO Auto-generated catch block
@@ -233,4 +221,99 @@ public class DatabaseConnection {
 		disconnect();
 	}
 
+	
+	// --- Sale Records ---
+	
+	
+	void deleteSaleRecord(int id)
+	{
+		connect();
+		
+		String sql = "delete from sale where Sale_ID = " + id + "";
+		
+		try {
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		disconnect();
+	}
+
+	void addNewSaleRecord(SaleRecord sr)
+	{
+		connect();
+		
+		String sql_1 = "INSERT INTO Sale (EID, CID, Sold_Car_ID, Date_Year,Date_Month,Date_Day, PriceSold) VALUES"
+			+ "('" + sr.employeeID + "', '" + sr.customerID + "', '" + sr.vehicleID + "', '" + sr.year + "', " + sr.month + ", '" + sr.day + "', '" + sr.salePrice + "');";
+		String sql_2 = "INSERT INTO Customer (FName, Minit, LName, Phone, Address) VALUES"
+			+ "('" + sr.firstName + "', '" + sr.middleInitial + "', '" + sr.lastName + "', '" + sr.phone + "', " + sr.address + ");";
+		
+		try {
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql_1);
+			stmt.executeUpdate(sql_2);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		disconnect();
+	}
+	
+	void updateExistingSaleRecord(SaleRecord sr) 
+	{
+		connect();
+		
+		String sql = "UPDATE Sale "
+				+ "SET EID = '" + sr.employeeID + "', CID = '" + sr.customerID + "', Sold_Car_ID = '" + sr.vehicleID  + "', Date_Year = '" + sr.year + "', Date_Month = " + sr.month + ", Date_Day = '" + sr.day + "', PriceSold = '" + sr.salePrice + " "
+				+ "WHERE Sale_ID = " + sr.saleRecordID +";";
+		
+		try {
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		disconnect();
+	}
+	
+	Vector<SaleRecord> getSaleRecords() 
+	{
+		
+		connect();
+		
+		Vector<SaleRecord> i = new Vector<SaleRecord>();
+		
+		String sql = "Select * from Sale Inner Join Customer on Sale.CID = Customer.Cust_ID;";
+		
+		try {
+			stmt = c.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				i.add(new SaleRecord(rs.getInt("Sale_ID"), rs.getInt("EID"), rs.getInt("CID"), rs.getInt("Sold_Car_ID"), rs.getString("FName"), 
+					rs.getString("Minit"), rs.getString("LName"), rs.getString("Phone"), rs.getString("Address"), rs.getInt("PriceSold"),
+					rs.getInt("Date_Year"), rs.getInt("Date_Month"), rs.getInt("Date_Day") ));
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		disconnect();
+
+		return i;
+	}
+
+	
+	
+	
+	
 }
