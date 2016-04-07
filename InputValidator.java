@@ -31,7 +31,7 @@ public class InputValidator
 	}
 	boolean validateMonth(String month)
 	{
-		return month.matches("(0[1-9]|10|11|12)");
+		return month.matches("(0[1-9]|10|11|12|1-9)");
 	}
 	boolean validateDay(String day)
 	{
