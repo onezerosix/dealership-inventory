@@ -162,9 +162,12 @@ public class DatabaseConnection
 	{
 		connect();
 		
-		String sql = "INSERT INTO employee (ssn, fname, minit, lname, title, wphone, pphone, salary, AccessLevel) VALUES"
+		
+
+		
+		String sql = "INSERT INTO employee (ssn, fname, minit, lname, title, wphone, pphone, salary, AccessLevel, UserName, Password) VALUES"
 			+ "('" + e.ssn + "', '" + e.firstName + "', '" + e.MI + "', '" + e.lastName + "', '" + e.title + "', '" + e.workPhone + "', '" + e.personalPhone
-			+ "', " + e.salary + "', " + e.AccessLevel + ");";
+			+ "', " + e.salary + ", " + e.accessLevel + ", '" + e.userName + "', '" + e.password +  ");";
 		
 		try {
 			stmt = c.createStatement();
