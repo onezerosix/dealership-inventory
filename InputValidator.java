@@ -35,7 +35,7 @@ public class InputValidator
 	}
 	boolean validateDay(String day)
 	{
-		return day.matches("(0[1-9]|[1|2][0-9]|3[0|1])");
+		return day.matches("(1-9|0[1-9]|[1|2][0-9]|3[0|1])");
 	}
 	boolean validateVehicleVIN(String vin)
 	{
