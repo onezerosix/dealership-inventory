@@ -3,7 +3,7 @@ public class SaleRecord{
 
 	int saleRecordID = -1, employeeID=-1, customerID= -1, vehicleID =-1, salePrice, year, month, day;
 	String firstName, middleInitial, lastName, phone, address;
-	final static String[] saleRecordNames = {"saleRecordID","employeeID","customerID","vehicleID"};
+	final static String[] saleRecordNames = {"saleRecordID","employeeID","customerID","vehicleID", "First Name", "M", "Last Name", "Phone", "Address", "Price", "Year", "Month", "Day"};
 	
 	
 	SaleRecord(int saleRecordID, int employeeID, int customerID, int vehicleID, String firstName, String middleInitial, 

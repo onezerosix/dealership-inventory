@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -58,7 +59,7 @@ public class View extends JFrame implements ActionListener {
 		navButton_titles.put("Inventory List", InventoryListPage.name);
 		navButton_titles.put("Employee Managment", EmployeeListPage.name);
 		navButton_titles.put("Sale Records", SaleRecordListPage.name);
-
+		
 		navBarPane = new JPanel(new BorderLayout());
 		navBarPane.setBackground(Color.LIGHT_GRAY);
 		((BorderLayout) navBarPane.getLayout()).setVgap(0);
@@ -66,7 +67,6 @@ public class View extends JFrame implements ActionListener {
 		JPanel navBarPageButtons = new JPanel();
 		navBarPageButtons.setBackground(Color.LIGHT_GRAY);
 		((FlowLayout) navBarPageButtons.getLayout()).setVgap(0);
-
 
 		for(Map.Entry<String, String> entry : navButton_titles.entrySet())
 		{
@@ -179,17 +179,15 @@ public class View extends JFrame implements ActionListener {
 		{
 			String[] command = e.getActionCommand().split("_", 4);
 			int id = Integer.valueOf(command[3]);
-			boolean newSell = command[2].equals("new");
 			loadPage(command[1]);
 			
 			SaleRecordPage pageInstance = (SaleRecordPage) getInstanceOfClass(SaleRecordPage.name);
 			if(pageInstance != null)
 			{
-				if(newSell)
+				if(command[2].equals("new"))
 					pageInstance.createNewSaleRecord(id);
-				else
+				else if(command[2].equals("existing"))
 					pageInstance.loadSaleRecordInformation(id);
-					
 			}else
 			{
 				System.out.println("View::ActionPerformed - Could not load instance of SaleRecordPage");
@@ -202,10 +200,10 @@ public class View extends JFrame implements ActionListener {
 			SaleRecordListPage esrlp = (SaleRecordListPage) getInstanceOfClass(SaleRecordListPage.name);
 			esrlp.populateSaleRecordList();
 		}
-//		else if(e.getActionCommand().matches("goTo_.+"))
-//		{
-//			loadPage(e.getActionCommand().split("_", 2)[1]);
-//		}
+		else if(e.getActionCommand().matches("goTo_.+"))
+		{
+			System.out.println("View::actionPerformed() - could not match goTo_ comand \"" + e.getActionCommand() + "\"");
+		}
 		else if(e.getActionCommand().equals(logOut_button.getName()))
 		{
 			model.logOut();

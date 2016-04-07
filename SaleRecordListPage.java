@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -11,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 
 public class SaleRecordListPage extends JPanel implements ActionListener {
@@ -24,6 +27,9 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 	DefaultTableModel tableModel;
 	JTable table;
 	JButton newSaleRecord_button;
+	
+	// Column widths
+	TreeMap<String, Integer> columnWidths;
 	
 	ActionListener pageLoadDelegate;
 
@@ -49,10 +55,24 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 		this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		String[] columnNames = SaleRecord.saleRecordNames; // change to ?
 		tableModel.setColumnIdentifiers(columnNames);
-//		table.getColumnModel().getColumn(1).setPreferredWidth(150);
-//		table.getColumnModel().getColumn(3).setPreferredWidth(20);
-//		table.getColumnModel().getColumn(5).setPreferredWidth(100);
-//		table.removeColumn(table.getColumnModel().getColumn(0));
+		
+		for(int i=0; i<4; i++)
+			table.removeColumn(table.getColumnModel().getColumn(0));
+		
+		// column widths
+		columnWidths = new TreeMap<String, Integer>();
+		columnWidths.put("M", 10);
+		columnWidths.put("Address", 225);
+		columnWidths.put("Price", 50);
+		columnWidths.put("Year", 20);
+		columnWidths.put("Month", 10);
+		columnWidths.put("Day", 10);
+		
+		TableColumnModel tm = table.getColumnModel();
+		
+		for(Map.Entry<String, Integer> entry : columnWidths.entrySet())
+			tm.getColumn(tm.getColumnIndex(entry.getKey())).setPreferredWidth(entry.getValue());
+	
 
 		//mouse listener
 		table.addMouseListener(new MouseAdapter(){
@@ -70,12 +90,12 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 		});
 
 		newSaleRecord_button = new JButton("New");
-		newSaleRecord_button.setName("newSaleRecord"); //newEmployee
-		newSaleRecord_button.setActionCommand(newSaleRecord_button.getName()); // updated button for 
+		newSaleRecord_button.setName("newSaleRecord");
+		newSaleRecord_button.setActionCommand(newSaleRecord_button.getName());
 		newSaleRecord_button.addActionListener(this);
-		this.add(newSaleRecord_button); // newEmployee_button updated
+//		this.add(newSaleRecord_button);
 		
-		populateSaleRecordList(); //populateEmployeeList
+		populateSaleRecordList();
 		
 	}
 	
@@ -104,8 +124,8 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 
 	void loadSaleRecordPage(int id)
 	{
-//		ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_"+id); 
-//		pageLoadDelegate.actionPerformed(ae);
+		ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_" + "existing_" + id); 
+		pageLoadDelegate.actionPerformed(ae);
 	}
 
 	void createBlankRow()

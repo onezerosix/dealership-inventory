@@ -83,9 +83,6 @@ public class InventoryListPage extends JPanel implements ActionListener
 		add(editVehicle_button);
 		
 		populateInventoryList();
-		
-		
-		
 	}
 	
 	void resetPage()

@@ -1,8 +1,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,9 +18,6 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 	Model model;
 	int saleRecordID;
 	int vehicleID;
-	
-	//e.salesRecordID, e.employeeID, e.customerID, e.vehicleID, e.firstName, e.middleInitial, e.lastName, e.phone, 
-	//e.address, e.salePrice, e.year, e.month, e.day
 	
 	JLabel firstName_label;
 	JLabel middleInitial_label;
@@ -57,6 +55,7 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 	
 	void createNewSaleRecord(int vehicleID)
 	{
+		resetPage();
 		Vehicle v = model.getVehicle(vehicleID);
 		this.vehicleID = vehicleID;
 		loadSaleRecordInformation(-1);
@@ -69,29 +68,15 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		SaleRecord sr = model.getSaleRecord(srID); //getSales
 		saleRecordID = sr.saleRecordID;
 
-		if(saleRecordID >= 0)
-		{
-			firstName_text.setText(sr.firstName);
-			middleInitial_text.setText(sr.middleInitial);
-			lastName_text.setText(sr.lastName);
-			phone_text.setText(sr.phone);
-			address_text.setText(sr.address);
-			salePrice_text.setText( String.valueOf(sr.salePrice ));
-			year_text.setText(String.valueOf(sr.year));
-			month_text.setText(String.valueOf(sr.month));
-			day_text.setText(String.valueOf(sr.day));
-		}else
-		{
-			firstName_text.setText("");
-			middleInitial_text.setText("");
-			lastName_text.setText("");
-			phone_text.setText("");
-			address_text.setText("");
-			salePrice_text.setText("");
-			year_text.setText("");
-			month_text.setText("");
-			day_text.setText("");
-		}
+		firstName_text.setText(sr.firstName);
+		middleInitial_text.setText(sr.middleInitial);
+		lastName_text.setText(sr.lastName);
+		phone_text.setText(sr.phone);
+		address_text.setText(sr.address);
+		salePrice_text.setText( String.valueOf(sr.salePrice ));
+		year_text.setText(String.valueOf(sr.year));
+		month_text.setText(String.valueOf(sr.month));
+		day_text.setText(String.valueOf(sr.day));
 	}
 	
 	private void resetPage()
@@ -131,37 +116,80 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		day_text= new JTextField();
 		
 		
-		Dimension textFieldSize = new Dimension(100, 25);
+		Dimension textFieldSize_regular = new Dimension(100, 25);
+		Dimension textFieldSize_large = new Dimension(250, 25);
 		
-		firstName_text.setPreferredSize(textFieldSize);
-		middleInitial_text.setPreferredSize(textFieldSize);
-		lastName_text.setPreferredSize(textFieldSize);
-		phone_text.setPreferredSize(textFieldSize);
-		address_text.setPreferredSize(textFieldSize);
-		salePrice_text.setPreferredSize(textFieldSize);
-		year_text.setPreferredSize(textFieldSize);
-		month_text.setPreferredSize(textFieldSize);
-		day_text.setPreferredSize(textFieldSize);
+		firstName_text.setPreferredSize(textFieldSize_regular);
+		middleInitial_text.setPreferredSize(textFieldSize_regular);
+		lastName_text.setPreferredSize(textFieldSize_regular);
+		phone_text.setPreferredSize(textFieldSize_regular);
+		address_text.setPreferredSize(textFieldSize_large);
+		salePrice_text.setPreferredSize(textFieldSize_regular);
+		year_text.setPreferredSize(textFieldSize_regular);
+		month_text.setPreferredSize(textFieldSize_regular);
+		day_text.setPreferredSize(textFieldSize_regular);
 		
-
-		this.add(firstName_label);
-		this.add(firstName_text);
-		this.add(middleInitial_label);
-		this.add(middleInitial_text);
-		this.add(lastName_label);
-		this.add(lastName_text);
-		this.add(phone_label);
-		this.add(phone_text);
-		this.add(address_label);
-		this.add(address_text);
-		this.add(salePrice_label);
-		this.add(salePrice_text);
-		this.add(year_label);
-		this.add(year_text);
-		this.add(month_label);
-		this.add(month_text);
-		this.add(day_label);
-		this.add(day_text);
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.anchor = GridBagConstraints.LINE_START; 
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(firstName_label,c);
+		c.gridx = 0;
+		c.gridy = 1;
+		this.add(firstName_text,c);
+		c.gridx = 1;
+		c.gridy = 0;
+		this.add(middleInitial_label,c);
+		c.gridx = 1;
+		c.gridy = 1;
+		this.add(middleInitial_text,c);
+		c.gridx = 2;
+		c.gridy = 0;
+		this.add(lastName_label,c);
+		c.gridx = 2;
+		c.gridy = 1;
+		this.add(lastName_text,c);
+		c.gridx = 0;
+		c.gridy = 3;
+		this.add(phone_label,c);
+		c.gridx = 0;
+		c.gridy = 4;
+		this.add(phone_text,c);
+		c.gridx = 1;
+		c.gridy = 3;
+		this.add(address_label,c);
+		c.gridx = 1;
+		c.gridy = 4;
+		c.gridwidth = 2;
+		this.add(address_text,c);
+		c.gridwidth = 1;
+		c.gridx = 0;
+		c.gridy = 6;
+		this.add(salePrice_label,c);
+		c.gridx = 0;
+		c.gridy = 7;
+		this.add(salePrice_text,c);
+		c.gridx = 0;
+		c.gridy = 9;
+		this.add(year_label,c);
+		c.gridx = 0;
+		c.gridy = 10;
+		this.add(year_text,c);
+		c.gridx = 1;
+		c.gridy = 9;
+		this.add(month_label,c);
+		c.gridx = 1;
+		c.gridy = 10;
+		this.add(month_text,c);
+		c.gridx = 2;
+		c.gridy = 9;
+		this.add(day_label,c);
+		c.gridx = 2;
+		c.gridy = 10;
+		this.add(day_text,c);
 	}
 	
 	private void buildNavPane()
@@ -169,12 +197,21 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		save_button = new JButton("Save");
 		save_button.setActionCommand("save");
 		save_button.addActionListener(this);
-		this.add(save_button);
 		
 		delete_button = new JButton("Delete");
 		delete_button.setActionCommand("delete");
 		delete_button.addActionListener(this);
-		this.add(delete_button);
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.gridx = 3;
+		c.gridy = 11;
+		this.add(save_button,c);
+		
+		c.gridx = 4;
+		c.gridy = 11;
+		this.add(delete_button,c);
+		
 	}
 	
 	private boolean saveSaleRecord()
@@ -264,10 +301,10 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		if(command.equals("save"))
 		{
 			if(saveSaleRecord())
-			{	/*
+			{	
 				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name);
 				pageLoadDelegate.actionPerformed(ae);
-				*/
+				
 			}
 		}else if(command.equals("delete"))
 		{
@@ -278,22 +315,14 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		
 	}
 	
-	
 }
-/*
 
-	
 
-	
 
-	
-	
-	
-	
-	
-	
 
-	
-	
-}
-*/
+
+
+
+
+
+

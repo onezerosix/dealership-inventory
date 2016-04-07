@@ -107,13 +107,11 @@ public class LoginPage extends JPanel implements ActionListener, KeyListener {
 		{
 			attemptLogin();
 		}
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -128,8 +126,7 @@ public class LoginPage extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 }
 

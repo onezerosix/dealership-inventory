@@ -294,7 +294,7 @@ public class EmployeePage extends JPanel implements ActionListener {
 		
 		if(valid){
 		model.saveEmployee(new Employee(employeeID, ssn_text.getText(), firstName_text.getText(), middleInitial_text.getText(), lastName_text.getText(), title_text.getText(),
-				workPhone_text.getText(), personalPhone_text.getText(), Integer.valueOf(salary_text.getText()), 9, "user", "pass" )); //TODO: add access level, username, and pass support to this page
+				workPhone_text.getText(), personalPhone_text.getText(), Integer.valueOf(salary_text.getText()), 9, firstName_text.getText(), firstName_text.getText() )); //TODO: add access level, username, and pass support to this page
 		}
 		
 		return valid;
@@ -313,8 +313,8 @@ public class EmployeePage extends JPanel implements ActionListener {
 		if(command.equals("save"))
 		{
 			if(saveEmployee()){
-//				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
-//				pageLoadDelegate.actionPerformed(ae);
+				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
+				pageLoadDelegate.actionPerformed(ae);
 			}
 		}else if(command.equals("delete"))
 		{

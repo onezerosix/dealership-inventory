@@ -372,8 +372,8 @@ public class InventoryPage extends JPanel implements ActionListener {
 		{
 			if(saveVehicle())
 			{
-//			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
-//			pageLoadDelegate.actionPerformed(ae);
+			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+			pageLoadDelegate.actionPerformed(ae);
 			}
 		}else if(command.equals("delete"))
 		{
