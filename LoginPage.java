@@ -92,7 +92,7 @@ public class LoginPage extends JPanel implements ActionListener, KeyListener {
 			password_text.setBackground(Color.white);
 			username_text.setText("");
 			password_text.setText("");
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + DashboardPage.name);
 			pageLoadDelegate.actionPerformed(ae);
 		}else
 		{

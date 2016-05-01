@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -312,15 +313,36 @@ public class EmployeePage extends JPanel implements ActionListener {
 		
 		if(command.equals("save"))
 		{
-			if(saveEmployee()){
-				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
-				pageLoadDelegate.actionPerformed(ae);
-			}
+			if(saveEmployee())
+				if(JOptionPane.showConfirmDialog(this, "Would you like to contiue editing records?", "Continue?", JOptionPane.YES_NO_OPTION) == 0)
+				{//navigate to list page
+					
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}else
+				{//navigate to dashbaord
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + DashboardPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}
 		}else if(command.equals("delete"))
 		{
-			deleteEmployee();
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
-			pageLoadDelegate.actionPerformed(ae);
+			if(employeeID == model.getCurrentUser().id)
+			{
+				if(JOptionPane.showConfirmDialog(this, "Are you trying to delete yourself again?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0)
+					if(JOptionPane.showConfirmDialog(this, "Don't you have anything left to live for?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 1)
+						if(JOptionPane.showConfirmDialog(this, "Alright, I'll do it. I'm just a computer after all. I don't even really care if you delete yourself. Are you sure?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0)
+						{
+							JOptionPane.showConfirmDialog(this, "Just kidding. I can't let you do that, " + model.getCurrentUser().firstName + ".", "Delete Confirmation", JOptionPane.PLAIN_MESSAGE);
+						}
+			}else
+			{
+				if(JOptionPane.showConfirmDialog(this, "Are you sure?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0)
+				{
+					deleteEmployee();
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + EmployeeListPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}
+			}
 		}
 		
 	}

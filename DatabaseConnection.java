@@ -247,7 +247,7 @@ public class DatabaseConnection
 		
 
 		String sql_1 = "INSERT INTO Customer (FName, Minit, LName, Phone, Address) VALUES"
-			+ "('" + sr.firstName + "', '" + sr.middleInitial + "', '" + sr.lastName + "', '" + sr.phone + "', " + sr.address + ");";
+			+ "('" + sr.firstName + "', '" + sr.middleInitial + "', '" + sr.lastName + "', '" + sr.phone + "', '" + sr.address + "');";
 		String sql_2 = "INSERT INTO Sale (EID, CID, Sold_Car_ID, Date_Year,Date_Month,Date_Day, PriceSold) VALUES"
 			+ "('" + sr.employeeID + "', '" + getMostRecentCustID() + "', '" + sr.vehicleID + "', '" + sr.year + "', " + sr.month + ", '" + sr.day + "', '" + sr.salePrice + "');";
 		
@@ -265,7 +265,7 @@ public class DatabaseConnection
 		disconnect();
 	}
 	
-	private int getMostRecentCustID()
+	int getMostRecentCustID() //TODO: make this private and/or non esixtant 
 	{
 		int id = -1;
 		
@@ -296,7 +296,7 @@ public class DatabaseConnection
 		connect();
 		
 		String sql = "UPDATE Sale "
-				+ "SET EID = '" + sr.employeeID + "', CID = '" + sr.customerID + "', Sold_Car_ID = '" + sr.vehicleID  + "', Date_Year = '" + sr.year + "', Date_Month = " + sr.month + ", Date_Day = '" + sr.day + "', PriceSold = '" + sr.salePrice + " "
+				+ "SET EID = '" + sr.employeeID + "', CID = '" + sr.customerID + "', Sold_Car_ID = '" + sr.vehicleID  + "', Date_Year = '" + sr.year + "', Date_Month = " + sr.month + ", Date_Day = '" + sr.day + "', PriceSold = '" + sr.salePrice + "' "
 				+ "WHERE Sale_ID = " + sr.saleRecordID +";";
 		
 		try {

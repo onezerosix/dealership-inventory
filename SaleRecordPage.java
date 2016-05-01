@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -278,7 +279,7 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 
 		if(valid)
 		{
-			model.saveSaleRecord(new SaleRecord(-1, model.getCurrentUser().id, -1, vehicleID, firstName_text.getText(), middleInitial_text.getText(), 
+			model.saveSaleRecord(new SaleRecord(saleRecordID, model.getCurrentUser().id, -1, vehicleID, firstName_text.getText(), middleInitial_text.getText(), 
 					lastName_text.getText(), phone_text.getText(), address_text.getText(), Integer.valueOf(salePrice_text.getText()),
 					Integer.valueOf(year_text.getText()), Integer.valueOf(month_text.getText()), Integer.valueOf(day_text.getText())   ));
 		}
@@ -301,16 +302,24 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		if(command.equals("save"))
 		{
 			if(saveSaleRecord())
-			{	
-				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name);
-				pageLoadDelegate.actionPerformed(ae);
-				
-			}
+				if(JOptionPane.showConfirmDialog(this, "Would you like to contiue editing records?", "Continue?", JOptionPane.YES_NO_OPTION) == 0)
+				{//navigate to list page
+					
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordListPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}else
+				{//navigate to dashboard
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + DashboardPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}
 		}else if(command.equals("delete"))
 		{
-			deleteSaleRecord();
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name);
-			pageLoadDelegate.actionPerformed(ae);
+			if(JOptionPane.showConfirmDialog(this, "Are you sure?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0)
+			{
+				deleteSaleRecord();
+				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordListPage.name);
+				pageLoadDelegate.actionPerformed(ae);
+			}	
 		}
 		
 	}

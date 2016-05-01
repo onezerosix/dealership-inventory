@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -371,15 +372,24 @@ public class InventoryPage extends JPanel implements ActionListener {
 		if(command.equals("save"))
 		{
 			if(saveVehicle())
-			{
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
-			pageLoadDelegate.actionPerformed(ae);
-			}
+				if(JOptionPane.showConfirmDialog(this, "Would you like to contiue editing records?", "Continue?", JOptionPane.YES_NO_OPTION) == 0)
+				{//navigate to list page
+						ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+						pageLoadDelegate.actionPerformed(ae);
+				}else
+				{//navigate to dashboard
+					ActionEvent ae = new ActionEvent(this, 1, "goTo_" + DashboardPage.name);
+					pageLoadDelegate.actionPerformed(ae);
+				}
+				
 		}else if(command.equals("delete"))
 		{
-			deleteVehicle();
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
-			pageLoadDelegate.actionPerformed(ae);
+			if(JOptionPane.showConfirmDialog(this, "Are you sure?", "Delete Confirmation", JOptionPane.YES_NO_OPTION) == 0)
+			{
+				deleteVehicle();
+				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + InventoryListPage.name);
+				pageLoadDelegate.actionPerformed(ae);
+			}
 		}else if(command.equals(sell_button.getName()))
 		{
 			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_new_" + vehicleID);

@@ -31,11 +31,11 @@ public class InputValidator
 	}
 	boolean validateMonth(String month)
 	{
-		return month.matches("([1-9]|0[1-9]|10|11|12)");
+		return month.matches("(1-9|0[1-9]|10|11|12)");
 	}
 	boolean validateDay(String day)
 	{
-		return day.matches("([1-9]|0[1-9]|[1|2][0-9]|3[0|1])");
+		return day.matches("(1-9|0[1-9]|[1|2][0-9]|3[0|1])");
 	}
 	boolean validateVehicleVIN(String vin)
 	{

@@ -160,7 +160,10 @@ public class Model
 		return ret;
 	}
 
-
+	int getMostRecentCustomerID()
+	{
+		return db.getMostRecentCustID();
+	}
 
 
 }

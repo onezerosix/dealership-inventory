@@ -1,13 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
-import java.awt.Insets;
+import java.awt.Image;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,6 +28,7 @@ public class View extends JFrame implements ActionListener {
 	TreeMap<String, JButton> navButtons;
 	TreeMap<String, String> navButton_titles;
 	JButton logOut_button;
+	Dimension buttonSize = new Dimension(25, 25);
 	
 	//content pane
 	JPanel contentPane;
@@ -51,8 +57,7 @@ public class View extends JFrame implements ActionListener {
 	}
 	
 	void buildNavBar()
-	{
-		
+	{	
 		// navigation buttons
 		navButtons = new TreeMap<String, JButton>();
 		navButton_titles = new TreeMap<String, String>(); //<name on button, name of page>
@@ -74,6 +79,16 @@ public class View extends JFrame implements ActionListener {
 			newButton.setName(entry.getKey());
 			newButton.addActionListener(this);
 			newButton.setActionCommand("goTo_" + entry.getValue());
+			newButton.setFocusable(false);
+			
+			try {
+				BufferedImage bi = ImageIO.read(getClass().getResource( entry.getKey() + ".png"));
+				newButton.setIcon(new ImageIcon(bi.getScaledInstance(buttonSize.width, buttonSize.width, Image.SCALE_SMOOTH)));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			navButtons.put(entry.getKey(), newButton);
 			navBarPageButtons.add(newButton);
 		}
@@ -82,11 +97,20 @@ public class View extends JFrame implements ActionListener {
 		
 		//logout button
 		logOut_button = new JButton("Log Out");
+
+		try {
+			BufferedImage bi = ImageIO.read(getClass().getResource("logout.png"));
+			logOut_button.setIcon(new ImageIcon(bi.getScaledInstance(buttonSize.width, buttonSize.width, Image.SCALE_SMOOTH)));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		logOut_button.setName("logOut");
 		logOut_button.setActionCommand(logOut_button.getName());
 		logOut_button.addActionListener(this);
+		logOut_button.setFocusable(false);
 		navBarPane.add(logOut_button, BorderLayout.LINE_END);
-		
 	}
 	
 	void buildContentPane()
@@ -99,7 +123,7 @@ public class View extends JFrame implements ActionListener {
 		contentPane.add(new EmployeePage(this), EmployeePage.name);
 		contentPane.add(new SaleRecordListPage(this), SaleRecordListPage.name);
 		contentPane.add(new SaleRecordPage(this), SaleRecordPage.name);
-		
+		contentPane.add(new DashboardPage(this), DashboardPage.name);
 	}
 	
 	void loadPage(String named)
@@ -127,8 +151,8 @@ public class View extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
+	public void actionPerformed(ActionEvent e)
+	{
 		if(e.getActionCommand().matches("goTo_" + InventoryPage.name + "_.+"))
 		{//loading a vehicle to the inventory page    command format: "goTo_InventoryPage_VIN"
 			String[] command = e.getActionCommand().split("_", 3);
@@ -143,6 +167,8 @@ public class View extends JFrame implements ActionListener {
 			{
 				System.out.println("View::ActionPerformed - Could not load vehicle to inventory page");
 			}
+			
+			
 		}
 		else if(e.getActionCommand().matches("goTo_" + EmployeePage.name + "_.+"))
 		{//loading an employee to the employee page    command format: "goTo_EmployeePage_ID"
@@ -199,6 +225,10 @@ public class View extends JFrame implements ActionListener {
 			
 			SaleRecordListPage esrlp = (SaleRecordListPage) getInstanceOfClass(SaleRecordListPage.name);
 			esrlp.populateSaleRecordList();
+		}
+		else if(e.getActionCommand().equals("goTo_" + DashboardPage.name))
+		{
+			loadPage(DashboardPage.name);
 		}
 		else if(e.getActionCommand().matches("goTo_.+"))
 		{
