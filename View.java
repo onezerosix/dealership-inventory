@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class View extends JFrame implements ActionListener {
@@ -62,7 +63,7 @@ public class View extends JFrame implements ActionListener {
 		navButtons = new TreeMap<String, JButton>();
 		navButton_titles = new TreeMap<String, String>(); //<name on button, name of page>
 		navButton_titles.put("Inventory List", InventoryListPage.name);
-		navButton_titles.put("Employee Managment", EmployeeListPage.name);
+		navButton_titles.put("Employee Management", EmployeeListPage.name);
 		navButton_titles.put("Sale Records", SaleRecordListPage.name);
 		
 		navBarPane = new JPanel(new BorderLayout());
@@ -172,17 +173,23 @@ public class View extends JFrame implements ActionListener {
 		}
 		else if(e.getActionCommand().matches("goTo_" + EmployeePage.name + "_.+"))
 		{//loading an employee to the employee page    command format: "goTo_EmployeePage_ID"
-			String[] command = e.getActionCommand().split("_", 3);
-			int id = Integer.valueOf(command[2]);
-			loadPage(command[1]);
-			
-			EmployeePage pageInstance = (EmployeePage) getInstanceOfClass(EmployeePage.name);
-			if(pageInstance != null)
+			if(model.canViewEmployeeListPage())
 			{
-				pageInstance.loadEmployeeInformation(id);
+				String[] command = e.getActionCommand().split("_", 3);
+				int id = Integer.valueOf(command[2]);
+				loadPage(command[1]);
+
+				EmployeePage pageInstance = (EmployeePage) getInstanceOfClass(EmployeePage.name);
+				if(pageInstance != null)
+				{
+					pageInstance.loadEmployeeInformation(id);
+				}else
+				{
+					System.out.println("View::ActionPerformed - Could not load employee to inventory page");
+				}
 			}else
 			{
-				System.out.println("View::ActionPerformed - Could not load employee to inventory page");
+				JOptionPane.showConfirmDialog(this, "I can't let you do that, " + model.getCurrentUser().firstName + ".", "Insufficient Privileges", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
 		else if(e.getActionCommand().equals("goTo_" + InventoryListPage.name))

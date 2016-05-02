@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -48,7 +49,6 @@ public class EmployeeListPage extends JPanel implements ActionListener
 		this.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 		String[] columnNames = Employee.employeeAttributeNames;
 		tableModel.setColumnIdentifiers(columnNames);
-//		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(3).setPreferredWidth(20);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
 		table.removeColumn(table.getColumn("ID"));
@@ -119,7 +119,7 @@ public class EmployeeListPage extends JPanel implements ActionListener
 			
 		if(e.getActionCommand().equals(newEmployee_button.getName()))
 		{
-			loadEmployeePage(-1);
+				loadEmployeePage(-1);
 		}
 		else if(e.getActionCommand().equals(editEmployee_button.getName()))
 		{

@@ -165,7 +165,15 @@ public class Model
 		return db.getMostRecentCustID();
 	}
 
-
+	
+	// --- privelages ---
+	
+	boolean canViewEmployeeListPage()
+	{
+		return getCurrentUser().accessLevel >= 5;
+	}
+	
+	
 }
 
 
