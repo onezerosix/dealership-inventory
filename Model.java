@@ -142,7 +142,10 @@ public class Model
 	void saveSaleRecord(SaleRecord sr)
 	{
 		if(sr.saleRecordID < 0)
+		{
 			db.addNewSaleRecord(sr);
+			deleteVehicle(sr.vehicleID);
+		}
 		else
 			db.updateExistingSaleRecord(sr);
 	}

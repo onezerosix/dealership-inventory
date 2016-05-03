@@ -69,15 +69,29 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		SaleRecord sr = model.getSaleRecord(srID); //getSales
 		saleRecordID = sr.saleRecordID;
 
-		firstName_text.setText(sr.firstName);
-		middleInitial_text.setText(sr.middleInitial);
-		lastName_text.setText(sr.lastName);
-		phone_text.setText(sr.phone);
-		address_text.setText(sr.address);
-		salePrice_text.setText( String.valueOf(sr.salePrice ));
-		year_text.setText(String.valueOf(sr.year));
-		month_text.setText(String.valueOf(sr.month));
-		day_text.setText(String.valueOf(sr.day));
+		if(sr.saleRecordID != -1)
+		{
+			firstName_text.setText(sr.firstName);
+			middleInitial_text.setText(sr.middleInitial);
+			lastName_text.setText(sr.lastName);
+			phone_text.setText(sr.phone);
+			address_text.setText(sr.address);
+			salePrice_text.setText( String.valueOf(sr.salePrice ));
+			year_text.setText(String.valueOf(sr.year));
+			month_text.setText(String.valueOf(sr.month));
+			day_text.setText(String.valueOf(sr.day));
+		}else
+		{
+			firstName_text.setText("");
+			middleInitial_text.setText("");
+			lastName_text.setText("");
+			phone_text.setText("");
+			address_text.setText("");
+			salePrice_text.setText("");
+			year_text.setText("");
+			month_text.setText("");
+			day_text.setText("");
+		}
 	}
 	
 	private void resetPage()
@@ -279,7 +293,7 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 
 		if(valid)
 		{
-			model.saveSaleRecord(new SaleRecord(saleRecordID, model.getCurrentUser().id, -1, vehicleID, firstName_text.getText(), middleInitial_text.getText(), 
+			model.saveSaleRecord(new SaleRecord(saleRecordID, model.getCurrentUser().id, model.getSaleRecord(saleRecordID).customerID, vehicleID, firstName_text.getText(), middleInitial_text.getText(), 
 					lastName_text.getText(), phone_text.getText(), address_text.getText(), Integer.valueOf(salePrice_text.getText()),
 					Integer.valueOf(year_text.getText()), Integer.valueOf(month_text.getText()), Integer.valueOf(day_text.getText())   ));
 		}

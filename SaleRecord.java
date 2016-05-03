@@ -22,7 +22,6 @@ public class SaleRecord{
 		this.year = year;
 		this.month = month;
 		this.day = day;
-		
 	}
 	
 	SaleRecord(SaleRecord sr)

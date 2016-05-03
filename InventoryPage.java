@@ -392,13 +392,16 @@ public class InventoryPage extends JPanel implements ActionListener {
 			}
 		}else if(command.equals(sell_button.getName()))
 		{
-			ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_new_" + vehicleID);
-			pageLoadDelegate.actionPerformed(ae);
+			if(vehicleID == -1)
+			{
+				JOptionPane.showConfirmDialog(this, "Please save vehicle before selling.", "-_-", JOptionPane.PLAIN_MESSAGE);
+			}else
+			{
+				ActionEvent ae = new ActionEvent(this, 1, "goTo_" + SaleRecordPage.name + "_new_" + vehicleID);
+				pageLoadDelegate.actionPerformed(ae);
+			}
 		}
-		
 	}
-
-
 }
 
 

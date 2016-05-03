@@ -224,7 +224,6 @@ public class DatabaseConnection
 	
 	// --- Sale Records ---
 	
-	
 	void deleteSaleRecord(int id)
 	{
 		connect();
@@ -244,18 +243,28 @@ public class DatabaseConnection
 
 	void addNewSaleRecord(SaleRecord sr)
 	{
+		connect();
 		
-
 		String sql_1 = "INSERT INTO Customer (FName, Minit, LName, Phone, Address) VALUES"
 			+ "('" + sr.firstName + "', '" + sr.middleInitial + "', '" + sr.lastName + "', '" + sr.phone + "', '" + sr.address + "');";
+		
+		try
+		{
+			stmt = c.createStatement();
+			stmt.executeUpdate(sql_1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		String sql_2 = "INSERT INTO Sale (EID, CID, Sold_Car_ID, Date_Year,Date_Month,Date_Day, PriceSold) VALUES"
 			+ "('" + sr.employeeID + "', '" + getMostRecentCustID() + "', '" + sr.vehicleID + "', '" + sr.year + "', " + sr.month + ", '" + sr.day + "', '" + sr.salePrice + "');";
 		
-		connect();
 		
-		try {
+		try
+		{
 			stmt = c.createStatement();
-			stmt.executeUpdate(sql_1);
 			stmt.executeUpdate(sql_2);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -269,9 +278,9 @@ public class DatabaseConnection
 	{
 		int id = -1;
 		
-		connect();
+//		connect();
 
-		String sql = "Select max(Cust_ID) as 'Most Recent Customer' from Customer;";
+		String sql = "SELECT Cust_ID FROM CUSTOMER WHERE Cust_ID IN (SELECT last_insert_rowid());";
 
 		
 		try
@@ -279,7 +288,7 @@ public class DatabaseConnection
 			stmt = c.createStatement();
 			rs = stmt.executeQuery(sql);
 
-			id = rs.getInt("Most Recent Customer");
+			id = rs.getInt("Cust_ID");
 			
 			
 		}catch (SQLException e) {
@@ -287,7 +296,7 @@ public class DatabaseConnection
 			e.printStackTrace();
 		}
 
-		disconnect();
+//		disconnect();
 		return id;
 	}
 
@@ -295,13 +304,18 @@ public class DatabaseConnection
 	{
 		connect();
 		
-		String sql = "UPDATE Sale "
+		String sql1 = "UPDATE Sale "
 				+ "SET EID = '" + sr.employeeID + "', CID = '" + sr.customerID + "', Sold_Car_ID = '" + sr.vehicleID  + "', Date_Year = '" + sr.year + "', Date_Month = " + sr.month + ", Date_Day = '" + sr.day + "', PriceSold = '" + sr.salePrice + "' "
 				+ "WHERE Sale_ID = " + sr.saleRecordID +";";
 		
+		String sql2 = "UPDATE Customer "
+				+ "SET FName = '" + sr.firstName + "', Minit = '" + sr.middleInitial + "', LName = '" + sr.lastName + "', Phone = '" + sr.phone + "', Address = '" + sr.address + "' "
+				+ "WHERE Cust_ID = " + sr.customerID +";";
+
 		try {
 			stmt = c.createStatement();
-			stmt.executeUpdate(sql);
+			stmt.executeUpdate(sql1);
+			stmt.executeUpdate(sql2);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -346,3 +360,12 @@ public class DatabaseConnection
 	
 	
 }
+
+
+
+
+
+
+
+
+
