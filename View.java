@@ -51,7 +51,7 @@ public class View extends JFrame implements ActionListener {
 		this.setLayout(new BorderLayout());
 		add(navBarPane, BorderLayout.NORTH);
 		add(contentPane, BorderLayout.CENTER);
-		this.setSize(800, 550);
+		this.setSize(800, 555);
 		this.setVisible(true);
 		this.setResizable(false);
 		
