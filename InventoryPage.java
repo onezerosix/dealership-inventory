@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ public class InventoryPage extends JPanel implements ActionListener {
 	JLabel color_label;
 	JLabel mileage_label;
 	JLabel price_label;
+	JLabel title;
 	
 	JTextField vin_text;
 	JTextField vehicleType_text;
@@ -69,6 +71,8 @@ public class InventoryPage extends JPanel implements ActionListener {
 		color_label = new JLabel("Color");
 		mileage_label = new JLabel("Mileage");
 		price_label = new JLabel("Price");
+		title = new JLabel("Vehicle Information");
+		title.setFont(new Font("Seif", Font.PLAIN, 20));
 		
 		
 		vin_text = new JTextField();
@@ -93,42 +97,30 @@ public class InventoryPage extends JPanel implements ActionListener {
 		color_text.setPreferredSize(textFieldSize);
 		mileage_text.setPreferredSize(textFieldSize);
 		price_text.setPreferredSize(textFieldSize);
-		
-		
-//		this.add(vin_label);
-//		this.add(vin_text);
-//		this.add(vehicleType_label);
-//		this.add(vehicleType_text);
-//		this.add(make_label);
-//		this.add(make_text);
-//		this.add(model_label);
-//		this.add(model_text);
-//		this.add(year_label);
-//		this.add(year_text);
-//		this.add(trim_label);
-//		this.add(trim_text);
-//		this.add(color_label);
-//		this.add(color_text);
-//		this.add(mileage_label);
-//		this.add(mileage_text);
-//		this.add(price_label);
-//		this.add(price_text);
-		
+
 		
 		GridBagConstraints c = new GridBagConstraints();
+	
+		c.anchor = GridBagConstraints.LINE_START;
 		
-		c.anchor = GridBagConstraints.LINE_START; 
-
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		this.add(title,c);
+		c.gridwidth = 1;
+		
 		c.gridx = 0;
 		c.gridy = 0;
 		this.add(vin_label,c);
 		
 		c.gridx = 0;
-		c.gridy = 1;	
+		c.gridy = 1;
+		c.gridwidth = 2;
 		this.add(vin_text,c);
+		c.gridwidth = 1;
 
 		c.gridx = 0;
-		c.gridy = 3;		
+		c.gridy = 3;
 		this.add(make_label,c);
 		
 		c.gridx = 0;
@@ -137,19 +129,19 @@ public class InventoryPage extends JPanel implements ActionListener {
 		
 		c.anchor = GridBagConstraints.CENTER; 	
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 3;
 		this.add(model_label,c);
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 4;		
 		this.add(model_text,c);
 		
-		c.gridx = 4;
+		c.gridx = 2;
 		c.gridy = 3;		
 		this.add(vehicleType_label,c);
 		
-		c.gridx = 4;
+		c.gridx = 2;
 		c.gridy = 4;
 		this.add(vehicleType_text,c);
 		
@@ -165,19 +157,19 @@ public class InventoryPage extends JPanel implements ActionListener {
 		
 		c.anchor = GridBagConstraints.CENTER; 
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 5;
 		this.add(trim_label,c);
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 6;
 		this.add(trim_text,c);
 
-		c.gridx = 4;
+		c.gridx = 2;
 		c.gridy = 5;
 		this.add(color_label,c);
 		
-		c.gridx = 4;
+		c.gridx = 2;
 		c.gridy = 6;
 		this.add(color_text,c);
 		
@@ -191,11 +183,11 @@ public class InventoryPage extends JPanel implements ActionListener {
 		c.gridy = 9;
 		this.add(mileage_text,c);
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 8;
 		this.add(price_label,c);
 		
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 9;
 		this.add(price_text,c);
 		
@@ -218,19 +210,17 @@ public class InventoryPage extends JPanel implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		c.gridx = 4;
-		c.gridy = 10;
-		this.add(save_button, c);
-		
-		c.gridx = 5;
-		c.gridy = 10;
-		this.add(delete_button, c);
-		
-		c.gridx = 3;
+		c.gridx = 2;
 		c.gridy = 10;
 		this.add(sell_button, c);
 		
+		c.gridx = 3;
+		c.gridy = 10;
+		this.add(save_button, c);
 		
+		c.gridx = 4;
+		c.gridy = 10;
+		this.add(delete_button, c);
 	}
 	
 	void resetPage()

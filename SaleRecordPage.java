@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 	JLabel year_label;
 	JLabel month_label;
 	JLabel day_label;
+	JLabel title;
 
 	JTextField firstName_text;
 	JTextField middleInitial_text;
@@ -105,6 +107,16 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		year_text.setText("");
 		month_text.setText("");
 		day_text.setText("");
+		
+		firstName_text.setBackground(Color.white);
+		middleInitial_text.setBackground(Color.white);
+		lastName_text.setBackground(Color.white);
+		phone_text.setBackground(Color.white);
+		address_text.setBackground(Color.white);
+		salePrice_text.setBackground(Color.white);
+		year_text.setBackground(Color.white);
+		month_text.setBackground(Color.white);
+		day_text.setBackground(Color.white);
 	}
 	
 	private void buildContentPane()
@@ -118,6 +130,8 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		year_label = new JLabel("Year");
 		month_label = new JLabel("Month");
 		day_label = new JLabel("Day");
+		title = new JLabel("Sale Record");
+		title.setFont(new Font("Seif", Font.PLAIN, 20));
 
 		
 		firstName_text = new JTextField();
@@ -149,61 +163,85 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		
 		c.anchor = GridBagConstraints.LINE_START; 
 		
-		c.gridx = 0;
+		
+		c.gridx = 1;
 		c.gridy = 0;
+		c.gridwidth = 4;
+		this.add(title,c);
+		c.gridwidth = 1;
+		
+		c.gridx = 0;
+		c.gridy = 1;
 		this.add(firstName_label,c);
+		
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
 		this.add(firstName_text,c);
+		
 		c.gridx = 1;
-		c.gridy = 0;
+		c.gridy = 1;
 		this.add(middleInitial_label,c);
+		
 		c.gridx = 1;
-		c.gridy = 1;
+		c.gridy = 2;
 		this.add(middleInitial_text,c);
-		c.gridx = 2;
-		c.gridy = 0;
-		this.add(lastName_label,c);
+		
 		c.gridx = 2;
 		c.gridy = 1;
+		this.add(lastName_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 2;
 		this.add(lastName_text,c);
+		
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		this.add(phone_label,c);
+		
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		this.add(phone_text,c);
-		c.gridx = 1;
-		c.gridy = 3;
-		this.add(address_label,c);
+		
 		c.gridx = 1;
 		c.gridy = 4;
+		this.add(address_label,c);
+		
+		c.gridx = 1;
+		c.gridy = 5;
 		c.gridwidth = 2;
 		this.add(address_text,c);
 		c.gridwidth = 1;
-		c.gridx = 0;
-		c.gridy = 6;
-		this.add(salePrice_label,c);
+		
 		c.gridx = 0;
 		c.gridy = 7;
+		this.add(salePrice_label,c);
+		
+		c.gridx = 0;
+		c.gridy = 8;
 		this.add(salePrice_text,c);
+		
 		c.gridx = 0;
-		c.gridy = 9;
+		c.gridy = 10;
 		this.add(year_label,c);
+		
 		c.gridx = 0;
-		c.gridy = 10;
+		c.gridy = 11;
 		this.add(year_text,c);
+		
 		c.gridx = 1;
-		c.gridy = 9;
+		c.gridy = 10;
 		this.add(month_label,c);
+		
 		c.gridx = 1;
-		c.gridy = 10;
+		c.gridy = 11;
 		this.add(month_text,c);
-		c.gridx = 2;
-		c.gridy = 9;
-		this.add(day_label,c);
+		
 		c.gridx = 2;
 		c.gridy = 10;
+		this.add(day_label,c);
+		
+		c.gridx = 2;
+		c.gridy = 11;
 		this.add(day_text,c);
 	}
 	
@@ -219,12 +257,12 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
-		c.gridx = 3;
-		c.gridy = 11;
+		c.gridx = 2;
+		c.gridy = 12;
 		this.add(save_button,c);
 		
-		c.gridx = 4;
-		c.gridy = 11;
+		c.gridx = 3;
+		c.gridy = 12;
 		this.add(delete_button,c);
 		
 	}
@@ -303,9 +341,8 @@ public class SaleRecordPage extends JPanel implements ActionListener {
 	}
 	
 	private void deleteSaleRecord()
-	{/*
-		model.deleteEmployee(saleRecordID);
-	*/
+	{
+		model.deleteSaleRecord(saleRecordID);
 	}
 	
 	@Override

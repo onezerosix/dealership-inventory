@@ -167,6 +167,11 @@ public class Model
 	{
 		return db.getMostRecentCustID();
 	}
+	
+	void deleteSaleRecord(int id)
+	{
+		db.deleteSaleRecord(id);
+	}
 
 	
 	// --- privelages ---

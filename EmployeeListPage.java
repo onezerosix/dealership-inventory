@@ -1,4 +1,6 @@
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,6 +28,7 @@ public class EmployeeListPage extends JPanel implements ActionListener
 	JTable table;
 	JButton newEmployee_button;
 	JButton editEmployee_button;
+	JLabel title;
 	
 	ActionListener pageLoadDelegate;
 
@@ -34,6 +38,19 @@ public class EmployeeListPage extends JPanel implements ActionListener
 		
 		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
+		
+		
+		
+		//title
+				title = new JLabel("Employees");
+				title.setFont(new Font("Seif", Font.PLAIN, 20));
+				GridBagConstraints c = new GridBagConstraints();
+				c.anchor = GridBagConstraints.PAGE_START;
+				c.gridx = 0;
+				c.gridy = 0;
+				this.add(title,c);
+		
+		
 		
 		tableModel = new DefaultTableModel()
 		{
@@ -70,6 +87,7 @@ public class EmployeeListPage extends JPanel implements ActionListener
 			}
 		});
 
+		//table
 		newEmployee_button = new JButton("New");
 		newEmployee_button.setName("newEmployee");
 		newEmployee_button.setActionCommand(newEmployee_button.getName());

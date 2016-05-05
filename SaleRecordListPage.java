@@ -1,4 +1,6 @@
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +11,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,6 +30,8 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 	DefaultTableModel tableModel;
 	JTable table;
 	JButton newSaleRecord_button;
+	JButton editSaleRecord_button;
+	JLabel title;
 	
 	// Column widths
 	TreeMap<String, Integer> columnWidths;
@@ -40,6 +45,18 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 		this.model = Model.sharedInstance;
 		this.pageLoadDelegate = pageLoadDelegate;
 		
+		
+		//title
+		title = new JLabel("Sales Records");
+		title.setFont(new Font("Seif", Font.PLAIN, 20));
+		GridBagConstraints c = new GridBagConstraints();
+		c.anchor = GridBagConstraints.PAGE_START;
+		c.gridx = 0;
+		c.gridy = 0;
+		this.add(title,c);
+		
+		
+		//table
 		tableModel = new DefaultTableModel()
 		{
 			private static final long serialVersionUID = 1L;
@@ -95,6 +112,12 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 		newSaleRecord_button.addActionListener(this);
 //		this.add(newSaleRecord_button);
 		
+		editSaleRecord_button = new JButton("Edit");
+		editSaleRecord_button.setName(editSaleRecord_button.getName());
+		editSaleRecord_button.setActionCommand(editSaleRecord_button.getName());
+		editSaleRecord_button.addActionListener(this);
+		this.add(editSaleRecord_button);
+		
 		populateSaleRecordList();
 		
 	}
@@ -141,6 +164,16 @@ public class SaleRecordListPage extends JPanel implements ActionListener {
 		if(e.getActionCommand().equals(newSaleRecord_button.getName()))
 		{
 			loadSaleRecordPage(-1);
+		}
+		else if(e.getActionCommand().equals(editSaleRecord_button.getActionCommand()));
+		{
+			int row = table.getSelectedRow();
+			int id;
+			if(row >= 0)
+			{
+				id =  Integer.valueOf( String.valueOf( tableModel.getValueAt(row, 0) ) );
+				loadSaleRecordPage(id);
+			}
 		}
 	}
 	

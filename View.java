@@ -51,8 +51,9 @@ public class View extends JFrame implements ActionListener {
 		this.setLayout(new BorderLayout());
 		add(navBarPane, BorderLayout.NORTH);
 		add(contentPane, BorderLayout.CENTER);
-		this.setSize(800, 525);
+		this.setSize(800, 550);
 		this.setVisible(true);
+		this.setResizable(false);
 		
 		loadPage("LoginPage");
 	}
@@ -62,6 +63,7 @@ public class View extends JFrame implements ActionListener {
 		// navigation buttons
 		navButtons = new TreeMap<String, JButton>();
 		navButton_titles = new TreeMap<String, String>(); //<name on button, name of page>
+		navButton_titles.put("Dashboard", DashboardPage.name);
 		navButton_titles.put("Inventory List", InventoryListPage.name);
 		navButton_titles.put("Employee Management", EmployeeListPage.name);
 		navButton_titles.put("Sale Records", SaleRecordListPage.name);
